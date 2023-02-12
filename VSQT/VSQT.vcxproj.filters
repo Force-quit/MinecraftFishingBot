@@ -21,5 +21,77 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{33ae7cf9-80cb-47d3-834c-8f5c3b1cfbf4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Utilities\EQKeyboardListener\EQKeyboardListener.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\EQShortcutListener\EQShortcutListener.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\EQShortcutListener\EQShortcutListenerWorker.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\EQSmartLineEdit.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\EQTabWidget.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\EQUIRangedLineEdit.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utilities\utils.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt\InputRecorder\EQInputRecorder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt\InputRecorder\EQInputRecorderWorker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt\InputRecorder\Event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\Utilities\EQKeyboardListener\EQKeyboardListener.h">
+      <Filter>Utilities</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Utilities\EQShortcutListener\EQShortcutListener.h">
+      <Filter>Utilities</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Utilities\EQShortcutListener\EQShortcutListenerWorker.h">
+      <Filter>Utilities</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Utilities\EQSmartLineEdit.h">
+      <Filter>Utilities</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Utilities\EQTabWidget.h">
+      <Filter>Utilities</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Utilities\EQUIRangedLineEdit.h">
+      <Filter>Utilities</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Qt\InputRecorder\EQInputRecorder.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Qt\InputRecorder\EQInputRecorderWorker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Utilities\utils.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Qt\InputRecorder\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
