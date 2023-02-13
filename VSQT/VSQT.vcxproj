@@ -92,6 +92,10 @@
     <ClCompile Include="..\Qt\InputRecorder\EQInputRecorder.cpp" />
     <ClCompile Include="..\Qt\InputRecorder\EQInputRecorderWorker.cpp" />
     <ClCompile Include="..\Qt\InputRecorder\Event.cpp" />
+    <ClCompile Include="..\Qt\InputRecorder\KeyboardEvent.cpp" />
+    <ClCompile Include="..\Qt\InputRecorder\MouseClickEvent.cpp" />
+    <ClCompile Include="..\Qt\InputRecorder\MouseEventsHandler.cpp" />
+    <ClCompile Include="..\Qt\InputRecorder\MouseMoveEvent.cpp" />
     <ClCompile Include="..\Utilities\EQKeyboardListener\EQKeyboardListener.cpp" />
     <ClCompile Include="..\Utilities\EQShortcutListener\EQShortcutListener.cpp" />
     <ClCompile Include="..\Utilities\EQShortcutListener\EQShortcutListenerWorker.cpp" />
@@ -123,6 +127,10 @@
     <QtMoc Include="..\Qt\InputRecorder\EQInputRecorderWorker.h" />
     <QtMoc Include="..\Qt\InputRecorder\EQInputRecorder.h" />
     <ClInclude Include="..\Qt\InputRecorder\Event.h" />
+    <ClInclude Include="..\Qt\InputRecorder\KeyboardEvent.h" />
+    <ClInclude Include="..\Qt\InputRecorder\MouseClickEvent.h" />
+    <ClInclude Include="..\Qt\InputRecorder\MouseEventsHandler.h" />
+    <ClInclude Include="..\Qt\InputRecorder\MouseMoveEvent.h" />
     <ClInclude Include="..\Utilities\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

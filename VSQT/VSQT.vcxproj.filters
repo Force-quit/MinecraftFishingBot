@@ -59,6 +59,18 @@
     <ClCompile Include="..\Qt\InputRecorder\Event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Qt\InputRecorder\MouseClickEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt\InputRecorder\MouseEventsHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt\InputRecorder\MouseMoveEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt\InputRecorder\KeyboardEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\Utilities\EQKeyboardListener\EQKeyboardListener.h">
@@ -91,6 +103,18 @@
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\Qt\InputRecorder\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Qt\InputRecorder\MouseClickEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Qt\InputRecorder\MouseEventsHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Qt\InputRecorder\MouseMoveEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Qt\InputRecorder\KeyboardEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
