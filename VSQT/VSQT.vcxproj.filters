@@ -97,6 +97,9 @@
     <QtMoc Include="..\Qt\InputRecorder\EQInputRecorderWorker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="..\Qt\InputRecorder\MouseEventsHandler.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Utilities\utils.h">
@@ -106,9 +109,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Qt\InputRecorder\MouseClickEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Qt\InputRecorder\MouseEventsHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Qt\InputRecorder\MouseMoveEvent.h">

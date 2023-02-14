@@ -129,7 +129,7 @@
     <ClInclude Include="..\Qt\InputRecorder\Event.h" />
     <ClInclude Include="..\Qt\InputRecorder\KeyboardEvent.h" />
     <ClInclude Include="..\Qt\InputRecorder\MouseClickEvent.h" />
-    <ClInclude Include="..\Qt\InputRecorder\MouseEventsHandler.h" />
+    <QtMoc Include="..\Qt\InputRecorder\MouseEventsHandler.h" />
     <ClInclude Include="..\Qt\InputRecorder\MouseMoveEvent.h" />
     <ClInclude Include="..\Utilities\utils.h" />
   </ItemGroup>
