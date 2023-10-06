@@ -12,6 +12,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AutoClicker", "AutoClicker\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EQUtilities", "EQUtilities\EQUtilities.vcxproj", "{ECB3D703-478F-4757-883B-D08EF40126B9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Password-creator", "Password-creator\Password-creator.vcxproj", "{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ECB3D703-478F-4757-883B-D08EF40126B9} = {ECB3D703-478F-4757-883B-D08EF40126B9}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -44,6 +49,14 @@ Global
 		{ECB3D703-478F-4757-883B-D08EF40126B9}.Release|x64.Build.0 = Release|x64
 		{ECB3D703-478F-4757-883B-D08EF40126B9}.Release|x86.ActiveCfg = Release|x64
 		{ECB3D703-478F-4757-883B-D08EF40126B9}.Release|x86.Build.0 = Release|x64
+		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Debug|x64.ActiveCfg = Debug|x64
+		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Debug|x64.Build.0 = Debug|x64
+		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Debug|x86.ActiveCfg = Debug|x64
+		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Debug|x86.Build.0 = Debug|x64
+		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Release|x64.ActiveCfg = Release|x64
+		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Release|x64.Build.0 = Release|x64
+		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Release|x86.ActiveCfg = Release|x64
+		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
