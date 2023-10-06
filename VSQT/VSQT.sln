@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{75F9D21E-02B8-4352-92BE-F555C1148D90}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AutoClicker", "AutoClicker\AutoClicker.vcxproj", "{F81BE895-FF03-4E4F-9F45-0AD1EDCC5063}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ECB3D703-478F-4757-883B-D08EF40126B9} = {ECB3D703-478F-4757-883B-D08EF40126B9}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EQUtilities", "EQUtilities\EQUtilities.vcxproj", "{ECB3D703-478F-4757-883B-D08EF40126B9}"
 EndProject
