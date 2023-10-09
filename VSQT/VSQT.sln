@@ -18,6 +18,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Password-creator", "Passwor
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Word-finder", "Word-finder\Word-finder.vcxproj", "{D5FCB14F-B827-488E-910C-B381D2397B22}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ECB3D703-478F-4757-883B-D08EF40126B9} = {ECB3D703-478F-4757-883B-D08EF40126B9}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
