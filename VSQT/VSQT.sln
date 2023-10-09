@@ -17,7 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Password-creator", "Passwor
 		{ECB3D703-478F-4757-883B-D08EF40126B9} = {ECB3D703-478F-4757-883B-D08EF40126B9}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Word-finder", "Word-finder\Word-finder.vcxproj", "{D5FCB14F-B827-488E-910C-B381D2397B22}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Word-finder", "Word-finder\Word-finder.vcxproj", "{67FF4458-885D-4007-8AED-D3122F16F303}"
 	ProjectSection(ProjectDependencies) = postProject
 		{ECB3D703-478F-4757-883B-D08EF40126B9} = {ECB3D703-478F-4757-883B-D08EF40126B9}
 	EndProjectSection
@@ -62,14 +62,14 @@ Global
 		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Release|x64.Build.0 = Release|x64
 		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Release|x86.ActiveCfg = Release|x64
 		{469AE0B8-3F19-4E32-A45C-D7D7255E3A6F}.Release|x86.Build.0 = Release|x64
-		{D5FCB14F-B827-488E-910C-B381D2397B22}.Debug|x64.ActiveCfg = Debug|x64
-		{D5FCB14F-B827-488E-910C-B381D2397B22}.Debug|x64.Build.0 = Debug|x64
-		{D5FCB14F-B827-488E-910C-B381D2397B22}.Debug|x86.ActiveCfg = Debug|x64
-		{D5FCB14F-B827-488E-910C-B381D2397B22}.Debug|x86.Build.0 = Debug|x64
-		{D5FCB14F-B827-488E-910C-B381D2397B22}.Release|x64.ActiveCfg = Release|x64
-		{D5FCB14F-B827-488E-910C-B381D2397B22}.Release|x64.Build.0 = Release|x64
-		{D5FCB14F-B827-488E-910C-B381D2397B22}.Release|x86.ActiveCfg = Release|x64
-		{D5FCB14F-B827-488E-910C-B381D2397B22}.Release|x86.Build.0 = Release|x64
+		{67FF4458-885D-4007-8AED-D3122F16F303}.Debug|x64.ActiveCfg = Debug|x64
+		{67FF4458-885D-4007-8AED-D3122F16F303}.Debug|x64.Build.0 = Debug|x64
+		{67FF4458-885D-4007-8AED-D3122F16F303}.Debug|x86.ActiveCfg = Debug|x64
+		{67FF4458-885D-4007-8AED-D3122F16F303}.Debug|x86.Build.0 = Debug|x64
+		{67FF4458-885D-4007-8AED-D3122F16F303}.Release|x64.ActiveCfg = Release|x64
+		{67FF4458-885D-4007-8AED-D3122F16F303}.Release|x64.Build.0 = Release|x64
+		{67FF4458-885D-4007-8AED-D3122F16F303}.Release|x86.ActiveCfg = Release|x64
+		{67FF4458-885D-4007-8AED-D3122F16F303}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
