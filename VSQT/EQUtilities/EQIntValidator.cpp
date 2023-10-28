@@ -6,12 +6,20 @@ EQIntValidator::EQIntValidator(int minimum, int maximum, QObject* parent)
 
 QValidator::State EQIntValidator::validate(QString& input, int& pos) const
 {
-	QValidator::State result{ QIntValidator::validate(input, pos) };
+	if (QIntValidator::validate(input, pos) == QValidator::State::Invalid)
+	{
+		bool inputIsNumber{};
+		input.toInt(&inputIsNumber);
+		if (!inputIsNumber)
+			return QValidator::State::Invalid;
+	}
+	
+	if (input.toInt() > top())
+		input = QString::number(top());
 
-	if (result == QValidator::State::Intermediate)
-		if (input.toInt() < bottom() || input.toInt() > top())
-			result = QValidator::State::Invalid;
-
-	return result;
+	// If input < bottom() or input is empty, 
+	// EQIntLineEdit::verifyValue will catch it
+	return QValidator::State::Acceptable;
 }
-EQIntValidator::~EQIntValidator(){}
+
+EQIntValidator::~EQIntValidator() {}

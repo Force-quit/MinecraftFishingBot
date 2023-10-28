@@ -14,6 +14,12 @@ public:
 signals:
 	void valueChanged(int newValue);
 
+private:
+	int mLastValue;
+
 private slots:
-	void emitValueChanged();
+	void verifyValue();
+
+protected:
+	void focusOutEvent(QFocusEvent* e) override;
 };
