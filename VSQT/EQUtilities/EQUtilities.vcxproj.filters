@@ -32,6 +32,9 @@
     <ClCompile Include="EQTabWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EQTextValidator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="EQIntLineEdit.h">
@@ -51,6 +54,9 @@
     </QtMoc>
     <QtMoc Include="EQIntValidator.h">
       <Filter>Private</Filter>
+    </QtMoc>
+    <QtMoc Include="EQTextValidator.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

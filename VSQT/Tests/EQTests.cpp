@@ -2,15 +2,16 @@
 #include <EQUtilities/EQIntLineEdit.h>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QLineEdit>
+#include <EQUtilities/EQTextValidator.h>
 
 EQTests::EQTests(QWidget* parent)
 	: QMainWindow(parent)
 {
-	EQIntLineEdit* line{ new EQIntLineEdit(69, 420) };
-	line->setText(QString::number(420));
-	connect(line, &EQIntLineEdit::valueChanged, [](int newValue) {
-		qDebug() << newValue;
-		});
+	QLineEdit* line{ new QLineEdit };
+	EQTextValidator* validator{ new EQTextValidator };
+	line->setValidator(validator);
+
 	setCentralWidget(line);
 }
 

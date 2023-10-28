@@ -107,6 +107,7 @@
     <QtMoc Include="EQShortcutListener.h" />
     <QtMoc Include="EQShortcutListenerWorker.h" />
     <QtMoc Include="EQTabWidget.h" />
+    <QtMoc Include="EQTextValidator.h" />
     <ClInclude Include="equtilities_global.h" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +117,7 @@
     <ClCompile Include="EQShortcutListener.cpp" />
     <ClCompile Include="EQShortcutListenerWorker.cpp" />
     <ClCompile Include="EQTabWidget.cpp" />
+    <ClCompile Include="EQTextValidator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
