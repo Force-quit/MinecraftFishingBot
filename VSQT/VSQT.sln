@@ -25,6 +25,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Word-finder", "Word-finder\
 		{ECB3D703-478F-4757-883B-D08EF40126B9} = {ECB3D703-478F-4757-883B-D08EF40126B9}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MinecraftFishingBot", "MinecraftFishingBot\MinecraftFishingBot.vcxproj", "{52A5DA91-1EB6-485C-9349-3E1E5C71338E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ECB3D703-478F-4757-883B-D08EF40126B9} = {ECB3D703-478F-4757-883B-D08EF40126B9}
+		{EDF692E7-78DD-4542-87A1-8625779C73E6} = {EDF692E7-78DD-4542-87A1-8625779C73E6}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EUtilities", "..\VS\EUtilities\EUtilities.vcxproj", "{EDF692E7-78DD-4542-87A1-8625779C73E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -73,6 +81,22 @@ Global
 		{67FF4458-885D-4007-8AED-D3122F16F303}.Release|x64.Build.0 = Release|x64
 		{67FF4458-885D-4007-8AED-D3122F16F303}.Release|x86.ActiveCfg = Release|x64
 		{67FF4458-885D-4007-8AED-D3122F16F303}.Release|x86.Build.0 = Release|x64
+		{52A5DA91-1EB6-485C-9349-3E1E5C71338E}.Debug|x64.ActiveCfg = Debug|x64
+		{52A5DA91-1EB6-485C-9349-3E1E5C71338E}.Debug|x64.Build.0 = Debug|x64
+		{52A5DA91-1EB6-485C-9349-3E1E5C71338E}.Debug|x86.ActiveCfg = Debug|x64
+		{52A5DA91-1EB6-485C-9349-3E1E5C71338E}.Debug|x86.Build.0 = Debug|x64
+		{52A5DA91-1EB6-485C-9349-3E1E5C71338E}.Release|x64.ActiveCfg = Release|x64
+		{52A5DA91-1EB6-485C-9349-3E1E5C71338E}.Release|x64.Build.0 = Release|x64
+		{52A5DA91-1EB6-485C-9349-3E1E5C71338E}.Release|x86.ActiveCfg = Release|x64
+		{52A5DA91-1EB6-485C-9349-3E1E5C71338E}.Release|x86.Build.0 = Release|x64
+		{EDF692E7-78DD-4542-87A1-8625779C73E6}.Debug|x64.ActiveCfg = Debug|x64
+		{EDF692E7-78DD-4542-87A1-8625779C73E6}.Debug|x64.Build.0 = Debug|x64
+		{EDF692E7-78DD-4542-87A1-8625779C73E6}.Debug|x86.ActiveCfg = Debug|Win32
+		{EDF692E7-78DD-4542-87A1-8625779C73E6}.Debug|x86.Build.0 = Debug|Win32
+		{EDF692E7-78DD-4542-87A1-8625779C73E6}.Release|x64.ActiveCfg = Release|x64
+		{EDF692E7-78DD-4542-87A1-8625779C73E6}.Release|x64.Build.0 = Release|x64
+		{EDF692E7-78DD-4542-87A1-8625779C73E6}.Release|x86.ActiveCfg = Release|Win32
+		{EDF692E7-78DD-4542-87A1-8625779C73E6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

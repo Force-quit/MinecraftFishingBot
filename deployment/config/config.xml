@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>AutoClicker</Name>
+    <Version>1.2.0</Version>
+    <Title>AutoClicker installer</Title>
+    <Publisher>Émile Laforce</Publisher>
+    <InstallerApplicationIcon>../../Resources/mouse</InstallerApplicationIcon>
+    <StartMenuDir>Emalice</StartMenuDir>
+    <WizardStyle>Modern</WizardStyle>
+    <TargetDir>@ApplicationsDir@/Emalice/AutoClicker</TargetDir>
+</Installer>
