@@ -1,110 +1,58 @@
 #include "../Headers/EQMinecraftFishingBotWorker.h"
-#include <QGuiApplication>
-#include <QPixmap>
-#include <QScreen>
-#include <QSize>
 #include <QTimer>
+#include <QThread>
 #include <EUtilities/EUtilities.h>
 #include <Windows.h>
 
-EQMinecraftFishingBotWorker::EQMinecraftFishingBotWorker()
-	: captureSize(DEFAULT_CAPTURE_SIZE), heightStartPixel(), widthStartPixel(), captureInterval(DEFAULT_INTERVAL),
-	active(), captureHelp(), userActivation(), targetScreen(), shortcutListener()
+void EQMinecraftFishingBotWorker::scan()
 {
-	targetScreenChanged(QGuiApplication::primaryScreen()->name());
-	shortcutListener = new EQKeyboardListener({ VK_RCONTROL }, 10);
-	connect(shortcutListener, &EQKeyboardListener::targetKeysPressed, this, &EQMinecraftFishingBotWorker::activate);
-	shortcutListener->startListening();
-}
+	if (!active)
+		return;
 
+	hasBlack = false;
 
-void EQMinecraftFishingBotWorker::captureSizeChanged(const unsigned short captureSize)
-{
-	QSize targetScreenSize{ targetScreen->size() };
-	widthStartPixel = targetScreenSize.width() / 2 - captureSize / 2 - 2;
-	heightStartPixel = targetScreenSize.height() / 2 - captureSize / 2 - 5;
-	this->captureSize = captureSize;
-}
+	for (int y{ scanStartY }; y < scanStopY && !hasBlack; ++y)
+		for (int x{ scanStartX }; x < scanStopX && !hasBlack; ++x)
+			hasBlack = GetPixel(deviceContext, x, y) == 0;
 
-void EQMinecraftFishingBotWorker::targetScreenChanged(const QString& screenName)
-{
-	for (QScreen* screen : QGuiApplication::screens())
+	if (!hasBlack)
 	{
-		if (screenName == screen->name())
+		SendMessage(minecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
+		QThread::msleep(100);
+		SendMessage(minecraftWindowHandle, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(15, 15));
+
+		QTimer::singleShot(500, [=]()
 		{
-			targetScreen = screen;
-			captureSizeChanged(captureSize);
-			break;
-		}
+			SendMessage(minecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
+			QThread::msleep(100);
+			SendMessage(minecraftWindowHandle, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(15, 15));
+		});
+		QTimer::singleShot(3000, this, &EQMinecraftFishingBotWorker::scan);
 	}
-}
-
-void EQMinecraftFishingBotWorker::captureScreen()
-{
-	QPixmap capture = targetScreen->grabWindow(0, widthStartPixel, heightStartPixel, captureSize, captureSize);
-	if (captureHelp)
-		emit captureTaken(capture);
-
-	if (userActivation)
-	{
-		QImage captureImage = capture.toImage();
-		bool hasBlack{};
-		for (short i = 0; i < captureSize && !hasBlack; ++i)
-		{
-			for (short j = 0; j < captureSize && !hasBlack; ++j)
-			{
-				QColor pixelColor = captureImage.pixel(i, j);
-				hasBlack = pixelColor.black() == 255;
-			}
-		}
-
-		if (!hasBlack)
-		{
-			EUtilities::rightClick();
-			QTimer::singleShot(500, []() {EUtilities::rightClick(); });
-			QTimer::singleShot(2000, this, &EQMinecraftFishingBotWorker::captureScreen);
-			return;
-		}
-	}
-
-	if (userActivation || captureHelp)
-		QTimer::singleShot(captureInterval, this, &EQMinecraftFishingBotWorker::captureScreen);
 	else
-		active = false;
+		QTimer::singleShot(100, this, &EQMinecraftFishingBotWorker::scan);
 }
 
-void EQMinecraftFishingBotWorker::requestHelp()
+void EQMinecraftFishingBotWorker::toggle()
 {
-	captureHelp = !captureHelp;
-	if (captureHelp && !active)
+	active = !active;
+	if (active)
 	{
-		active = true;
-		QTimer::singleShot(captureInterval, this, &EQMinecraftFishingBotWorker::captureScreen);
-	}
-}
+		minecraftWindowHandle = GetForegroundWindow();
+		GetWindowRect(minecraftWindowHandle, &windowSizeRectangle);
+		deviceContext = GetDC(minecraftWindowHandle);
 
-void EQMinecraftFishingBotWorker::activate()
-{
-	userActivation = !userActivation;
-	emit stateChanged(userActivation);
-	if (userActivation && !active)
+		int middleX{ windowSizeRectangle.right / 2 };
+		scanStartX = middleX - SCAN_RANGE;
+		scanStopX = middleX + SCAN_RANGE;
+
+		int middleY{ windowSizeRectangle.bottom / 2 };
+		scanStartY = middleY - SCAN_RANGE;
+		scanStopY = middleY + SCAN_RANGE;
+		scan();
+	}
+	else
 	{
-		active = true;
-		QTimer::singleShot(captureInterval, this, &EQMinecraftFishingBotWorker::captureScreen);
+		ReleaseDC(minecraftWindowHandle, deviceContext);
 	}
-}
-
-void EQMinecraftFishingBotWorker::setCaptureInterval(const unsigned short interval)
-{
-	this->captureInterval = interval;
-}
-void EQMinecraftFishingBotWorker::stop()
-{
-	active = false;
-	captureHelp = false;
-}
-
-EQMinecraftFishingBotWorker::~EQMinecraftFishingBotWorker()
-{
-	delete shortcutListener;
 }

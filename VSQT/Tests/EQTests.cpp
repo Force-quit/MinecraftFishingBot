@@ -3,16 +3,14 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include <EQUtilities/EQTextValidator.h>
+#include <EQUtilities/EQShortcutListener.h>
 
 EQTests::EQTests(QWidget* parent)
 	: QMainWindow(parent)
 {
-	QLineEdit* line{ new QLineEdit };
-	EQTextValidator* validator{ new EQTextValidator };
-	line->setValidator(validator);
-
-	setCentralWidget(line);
+	EQShortcutListener* s{ new EQShortcutListener("Blabla") };
+	s->startListening();
+	setCentralWidget(s);
 }
 
 EQTests::~EQTests()

@@ -2,14 +2,10 @@
 
 #include <QMainWindow>
 #include <QString>
-#include <QImage>
-#include <QPixmap>
-#include <QLabel>
-#include <QPushButton>
-#include <QGroupBox>
-#include <QVBoxLayout>
 #include <QThread>
+#include <QGroupBox>
 #include "EQMinecraftFishingBotWorker.h"
+#include <EQUtilities/EQShortcutListener.h>
 
 class EQMinecraftFishingBot : public QMainWindow
 {
@@ -19,18 +15,11 @@ public:
 	EQMinecraftFishingBot(QWidget *parent = nullptr);
 	~EQMinecraftFishingBot();
 
-public slots:
-	void displayCapture(const QPixmap capture);
-
 private:
 	const QString APP_PATH;
 	QThread workerThread;
 	EQMinecraftFishingBotWorker* worker;
+	EQShortcutListener* shortcutListener;
 
-	QLabel* userCapture;
-
-
-	QGroupBox* initActivationLayout();
-	QGroupBox* initParameters();
-	QVBoxLayout* initHelpLayout();
+	QGroupBox* initInstructions();
 };
