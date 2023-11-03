@@ -38,11 +38,21 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\captureExample.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Resources\fish.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\fish.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\MinecraftFishingBot.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resources\resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

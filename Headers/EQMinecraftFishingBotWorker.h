@@ -13,12 +13,15 @@ class EQMinecraftFishingBotWorker  : public QObject
 
 public slots:
 	void toggle();
+	void toggleDebug();
 
 private:
 	static constexpr int SCAN_RANGE{ 15 };
 	void scan();
+	void resetRanges();
 
 	bool active;
+	bool debug;
 	bool hasBlack;
 
 	HWND minecraftWindowHandle;

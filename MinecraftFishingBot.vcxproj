@@ -73,6 +73,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\$(IntDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>EQUtilities.lib;EUtilities.lib;%(AdditionalDependencies);$(Qt_LIBS_)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "Resources\fish.png" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -83,6 +86,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\$(IntDir)</AdditionalLibraryDirectories>
       <AdditionalDependencies>EQUtilities.lib;EUtilities.lib;%(AdditionalDependencies);$(Qt_LIBS_)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "Resources\fish.png" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
@@ -120,8 +126,14 @@
     <QtMoc Include="Headers\EQMinecraftFishingBotWorker.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\captureExample.png" />
+    <Image Include="Resources\fish.ico" />
     <Image Include="Resources\fish.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources\MinecraftFishingBot.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resources\resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

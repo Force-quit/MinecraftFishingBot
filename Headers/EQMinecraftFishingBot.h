@@ -12,14 +12,14 @@ class EQMinecraftFishingBot : public QMainWindow
 	Q_OBJECT
 
 public:
-	EQMinecraftFishingBot(QWidget *parent = nullptr);
+	EQMinecraftFishingBot(QString APP_PATH, QWidget *parent = nullptr);
 	~EQMinecraftFishingBot();
 
 private:
-	const QString APP_PATH;
 	QThread workerThread;
 	EQMinecraftFishingBotWorker* worker;
 	EQShortcutListener* shortcutListener;
 
 	QGroupBox* initInstructions();
+	QGroupBox* initActivation();
 };
