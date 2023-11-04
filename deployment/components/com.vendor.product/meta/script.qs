@@ -8,7 +8,7 @@ Component.prototype.createOperations = function()
     component.createOperations();
 
     if (systemInfo.productType === "windows") {
-        component.addOperation("CreateShortcut", "@TargetDir@/AutoClicker.exe", "@StartMenuDir@/AutoClicker.lnk",
+        component.addOperation("CreateShortcut", "@TargetDir@/MinecraftFishingBot.exe", "@StartMenuDir@/MinecraftFishingBot.lnk",
             "workingDirectory=@TargetDir@");
     }
 }

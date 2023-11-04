@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package>
-    <DisplayName>AutoClicker</DisplayName>
-    <Description>Save time and energy with AutoClicker!</Description>
-    <Version>1.2</Version>
-    <ReleaseDate>2023-10-05</ReleaseDate>
+    <DisplayName>MinecraftFishingBot</DisplayName>
+    <Description>Why spend your time fishing in Minecraft when you can have a bot do it in the background for you?</Description>
+    <Version>2.0</Version>
+    <ReleaseDate>2023-11-04</ReleaseDate>
     <Default>script</Default>
     <ForcedInstallation>true</ForcedInstallation>
     <Script>script.qs</Script>
