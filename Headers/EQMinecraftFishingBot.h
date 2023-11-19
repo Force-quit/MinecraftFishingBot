@@ -12,7 +12,7 @@ class EQMinecraftFishingBot : public QMainWindow
 	Q_OBJECT
 
 public:
-	EQMinecraftFishingBot(QString APP_PATH, QWidget *parent = nullptr);
+	EQMinecraftFishingBot(QWidget *parent = nullptr);
 	~EQMinecraftFishingBot();
 
 private:

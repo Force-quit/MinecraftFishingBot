@@ -12,7 +12,7 @@
 #include <QIcon>
 #include <QApplication>
 
-EQMinecraftFishingBot::EQMinecraftFishingBot(QString APP_PATH, QWidget* parent)
+EQMinecraftFishingBot::EQMinecraftFishingBot(QWidget* parent)
 	: QMainWindow(parent), worker(), workerThread()
 {
 	worker = new EQMinecraftFishingBotWorker();

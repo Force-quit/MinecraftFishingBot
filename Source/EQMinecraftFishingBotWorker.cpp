@@ -1,7 +1,6 @@
 #include "../Headers/EQMinecraftFishingBotWorker.h"
 #include <QTimer>
 #include <QThread>
-#include <EUtilities/EUtilities.h>
 #include <Windows.h>
 
 void EQMinecraftFishingBotWorker::toggleDebug()

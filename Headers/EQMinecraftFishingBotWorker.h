@@ -1,11 +1,7 @@
 #pragma once
 
 #include <QObject>
-#include <QString>
-#include <QScreen>
-#include <QPixmap>
 #include <Windows.h>
-#include <EQUtilities/EQKeyboardListener.h>
 
 class EQMinecraftFishingBotWorker  : public QObject
 {
