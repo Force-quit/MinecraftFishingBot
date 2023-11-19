@@ -27,7 +27,7 @@ EQMinecraftFishingBot::EQMinecraftFishingBot(QString APP_PATH, QWidget* parent)
 
 	centralWidget->setLayout(centralLayout);
 	setCentralWidget(centralWidget);
-	setWindowIcon(QIcon(APP_PATH + "/fish.png"));
+	setWindowIcon(QIcon(":/images/fish.png"));
 	shortcutListener->startListening();
 }
 
