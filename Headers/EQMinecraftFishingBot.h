@@ -1,25 +1,26 @@
 #pragma once
 
 #include <QMainWindow>
-#include <QString>
 #include <QThread>
 #include <QGroupBox>
 #include "EQMinecraftFishingBotWorker.h"
 #include <EQUtilities/EQShortcutListener.h>
+#include <memory>
 
 class EQMinecraftFishingBot : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	EQMinecraftFishingBot(QWidget *parent = nullptr);
+	EQMinecraftFishingBot();
 	~EQMinecraftFishingBot();
 
 private:
 	QThread workerThread;
-	EQMinecraftFishingBotWorker* worker;
-	EQShortcutListener* shortcutListener;
+	std::unique_ptr<EQMinecraftFishingBotWorker> worker;
 
+	// These are deleted whith Qt's parent system
+	EQShortcutListener* shortcutListener; 
 	QGroupBox* initInstructions();
 	QGroupBox* initActivation();
 };

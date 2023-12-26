@@ -12,10 +12,9 @@
 #include <QIcon>
 #include <QApplication>
 
-EQMinecraftFishingBot::EQMinecraftFishingBot(QWidget* parent)
-	: QMainWindow(parent), worker(), workerThread()
+EQMinecraftFishingBot::EQMinecraftFishingBot()
+	: QMainWindow(), worker(std::make_unique<EQMinecraftFishingBotWorker>()), workerThread()
 {
-	worker = new EQMinecraftFishingBotWorker();
 	worker->moveToThread(&workerThread);
 	workerThread.start();
 
@@ -90,8 +89,8 @@ QGroupBox* EQMinecraftFishingBot::initActivation()
 
 		activationStatus->setPalette(palette);
 		});
-	connect(shortcutListener, &EQShortcutListener::shortcutPressed, worker, &EQMinecraftFishingBotWorker::toggle);
-	connect(activationDebugCheckbox, &QCheckBox::stateChanged, worker, &EQMinecraftFishingBotWorker::toggleDebug);
+	connect(shortcutListener, &EQShortcutListener::shortcutPressed, worker.get(), &EQMinecraftFishingBotWorker::toggle);
+	connect(activationDebugCheckbox, &QCheckBox::stateChanged, worker.get(), &EQMinecraftFishingBotWorker::toggleDebug);
 
 	activationLayout->addLayout(activationStatusLayout);
 	activationLayout->addWidget(shortcutListener);

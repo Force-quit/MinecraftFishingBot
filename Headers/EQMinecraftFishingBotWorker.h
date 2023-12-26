@@ -11,10 +11,14 @@ public slots:
 	void toggle();
 	void toggleDebug();
 
+private slots:
+	void rightClick();
+
 private:
 	static constexpr int SCAN_RANGE{ 15 };
 	void scan();
-	void resetRanges();
+	void setScanRanges();
+	
 
 	bool active;
 	bool debug;

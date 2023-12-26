@@ -13,15 +13,13 @@ void EQMinecraftFishingBotWorker::scan()
 	if (!active)
 		return;
 
-	resetRanges(); // In case of window resize
-
 	hasBlack = false;
 
-	for (int y{ scanStartY }; y < scanStopY && (!hasBlack || debug); ++y)
+	for (int y{ scanStartY }; y < scanStopY && !hasBlack; ++y)
 	{
-		for (int x{ scanStartX }; x < scanStopX && (!hasBlack || debug); ++x)
+		for (int x{ scanStartX }; x < scanStopX && !hasBlack; ++x)
 		{
-			hasBlack = GetPixel(deviceContext, x, y) == 0 || hasBlack;
+			hasBlack = GetPixel(deviceContext, x, y) == 0;
 
 			if (debug)
 			{
@@ -32,23 +30,28 @@ void EQMinecraftFishingBotWorker::scan()
 
 	if (!hasBlack)
 	{
-		SendMessage(minecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
-		QThread::msleep(100);
-		SendMessage(minecraftWindowHandle, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(15, 15));
+		rightClick();
+		QTimer::singleShot(1000, this, &EQMinecraftFishingBotWorker::rightClick);
 
-		QTimer::singleShot(500, [=]()
-			{
-				SendMessage(minecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
-				QThread::msleep(100);
-				SendMessage(minecraftWindowHandle, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(15, 15));
-			});
 		QTimer::singleShot(3000, this, &EQMinecraftFishingBotWorker::scan);
 	}
 	else
+	{
 		QTimer::singleShot(100, this, &EQMinecraftFishingBotWorker::scan);
+	}
 }
 
-void EQMinecraftFishingBotWorker::resetRanges()
+void EQMinecraftFishingBotWorker::rightClick()
+{
+	if (active)
+	{
+		SendMessage(minecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
+		QThread::msleep(50);
+		SendMessage(minecraftWindowHandle, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(15, 15));
+	}
+}
+
+void EQMinecraftFishingBotWorker::setScanRanges()
 {
 	GetWindowRect(minecraftWindowHandle, &windowSizeRectangle);
 	deviceContext = GetDC(minecraftWindowHandle);
@@ -70,6 +73,7 @@ void EQMinecraftFishingBotWorker::toggle()
 	if (active)
 	{
 		minecraftWindowHandle = GetForegroundWindow();
+		setScanRanges();
 		scan();
 	}
 	else
