@@ -6,96 +6,92 @@
 #include <QStringList>
 #include <QStringView>
 #include <QDesktopServices>
-#include <EQUtilities/EQShortcutListener.h>
+#include <EQUtilities/EQShortcutPicker.h>
 #include <QLabel>
 #include <QCheckbox>
 #include <QIcon>
 #include <QApplication>
 
 EQMinecraftFishingBot::EQMinecraftFishingBot()
-	: QMainWindow(), worker(std::make_unique<EQMinecraftFishingBotWorker>()), workerThread()
 {
-	worker->moveToThread(&workerThread);
-	workerThread.start();
+	auto* wCentralWidget{ new QWidget };
+	setCentralWidget(wCentralWidget);
 
-	QWidget* centralWidget{ new QWidget };
-	QVBoxLayout* centralLayout{ new QVBoxLayout };
+	auto* wCentralLayout{ new QVBoxLayout };
+	wCentralWidget->setLayout(wCentralLayout);
 
-	centralLayout->addWidget(initInstructions());
-	centralLayout->addWidget(initActivation());
+	auto wInstructions{ new QLabel };
+	wCentralLayout->addWidget(wInstructions);
+	wInstructions->setOpenExternalLinks(true);
+	wInstructions->setWordWrap(true);
+	wInstructions->setText(R"(
+		<h2>How to Use the Fishing Bot</h2>
+		<p>1. Start fishing.</p>
+		<p>2. Put your cursor on the floater (end of the fishing line).</p>
+		<p>3. Activate/deactive the bot with the indicated shortcut.</p>
+		<p>4. Enjoy!</p>
+		<p>For more details, visit my video showing <a href='https://youtu.be/ir8nRKQIZ28?si=0Zxs-2CfayvATsm4'>how to use this bot</a>.</p>
+		<p>Don't minimise the Minecraft window and you should be good to go!</p>
+	)");
 
-	centralWidget->setLayout(centralLayout);
-	setCentralWidget(centralWidget);
+	wCentralLayout->addWidget(initActivation());
+
 	setWindowIcon(QIcon(":/images/fish.png"));
-	shortcutListener->startListening();
-}
-
-QGroupBox* EQMinecraftFishingBot::initInstructions()
-{
-	QGroupBox* instructionsGroupBox{ new QGroupBox("Instructions") };
-	QVBoxLayout* instructionsLayout{ new QVBoxLayout };
-
-	QStringList instructions{
-		"Set the pauseOnLostFocus setting to false in Minecraft",
-		"Use your fishing rod",
-		"Put your Minecraft cursor on the floater (end of fishing line)",
-		"Make sure you are on Minecraft (window in foreground and has keyboard focus) and activate the bot",
-		"--- Don't minimise the game ---",
-	};
-
-	for (QString i : instructions)
-		instructionsLayout->addWidget(new QLabel(i));
-
-	instructionsGroupBox->setLayout(instructionsLayout);
-	return instructionsGroupBox;
 }
 
 QGroupBox* EQMinecraftFishingBot::initActivation()
 {
-	QGroupBox* activationGroupBox{ new QGroupBox("Activation") };
-	QVBoxLayout* activationLayout{ new QVBoxLayout };
+	auto* activationGroupBox{ new QGroupBox("Activation") };
+	auto* activationLayout{ new QVBoxLayout };
 
-	QCheckBox* activationDebugCheckbox{ new QCheckBox("Activate debug mode") };
+	auto* activationDebugCheckbox{ new QCheckBox("Activate debug mode") };
 	activationLayout->addWidget(activationDebugCheckbox);
 
-
-	QHBoxLayout* activationStatusLayout{ new QHBoxLayout };
+	auto* activationStatusLayout{ new QHBoxLayout };
 	QSizePolicy p;
 	p.setHorizontalStretch(1);
-	QLabel* activationStatusLabel{ new QLabel("Bot status : ") };
+	auto* activationStatusLabel{ new QLabel("Bot status : ") };
 	activationStatusLabel->setSizePolicy(p);
-	QLabel* activationStatus{ new QLabel("Inactive") };
-	activationStatus->setAutoFillBackground(true);
+
+	mStatusLabel->setAutoFillBackground(true);
 	activationStatusLayout->addWidget(activationStatusLabel);
-	activationStatusLayout->addWidget(activationStatus);
+	activationStatusLayout->addWidget(mStatusLabel);
 
-	shortcutListener = new EQShortcutListener("Activation shortcut");
-	connect(shortcutListener, &EQShortcutListener::shortcutPressed, [activationStatus]() {
-		QPalette palette = activationStatus->palette();
+	connect(shortcutListener, &EQShortcutPicker::shortcutPressed, worker, &EQMinecraftFishingBotWorker::toggle);
+	connect(shortcutListener, &EQShortcutPicker::shortcutPressed, this, &EQMinecraftFishingBot::toggle);
 
-		if (activationStatus->text() == "Inactive")
-		{
-			activationStatus->setText("Active");
-			palette.setColor(QPalette::WindowText, Qt::black);
-			palette.setColor(activationStatus->backgroundRole(), Qt::green);
+	connect(activationDebugCheckbox, &QCheckBox::stateChanged, worker, &EQMinecraftFishingBotWorker::toggleDebug);
 
-		}
-		else
-		{
-			activationStatus->setText("Inactive");
-			palette.setColor(QPalette::WindowText, QApplication::palette().text().color());
-			palette.setColor(activationStatus->backgroundRole(), Qt::transparent);
-		}
+	connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
+	worker->moveToThread(&workerThread);
+	workerThread.start();
 
-		activationStatus->setPalette(palette);
-		});
-	connect(shortcutListener, &EQShortcutListener::shortcutPressed, worker.get(), &EQMinecraftFishingBotWorker::toggle);
-	connect(activationDebugCheckbox, &QCheckBox::stateChanged, worker.get(), &EQMinecraftFishingBotWorker::toggleDebug);
+	shortcutListener->startListening();
 
 	activationLayout->addLayout(activationStatusLayout);
 	activationLayout->addWidget(shortcutListener);
 	activationGroupBox->setLayout(activationLayout);
 	return activationGroupBox;
+}
+
+void EQMinecraftFishingBot::toggle()
+{
+	QPalette palette = mStatusLabel->palette();
+
+	if (worker->isActive())
+	{
+		mStatusLabel->setText("Active");
+		palette.setColor(QPalette::WindowText, Qt::black);
+		palette.setColor(mStatusLabel->backgroundRole(), Qt::green);
+	}
+	else
+	{
+		mStatusLabel->setText("Inactive");
+		palette.setColor(QPalette::WindowText, QApplication::palette().text().color());
+		palette.setColor(mStatusLabel->backgroundRole(), Qt::transparent);
+	}
+
+	mStatusLabel->setPalette(palette);
 }
 
 EQMinecraftFishingBot::~EQMinecraftFishingBot()

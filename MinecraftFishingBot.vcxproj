@@ -19,8 +19,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{52A5DA91-1EB6-485C-9349-3E1E5C71338E}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22621.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -37,12 +37,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.6.1_msvc2019_64</QtInstall>
+    <QtInstall>6.7.2_msvc2019_64</QtInstall>
     <QtModules>core;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.6.1_msvc2019_64</QtInstall>
+    <QtInstall>6.7.2_msvc2019_64</QtInstall>
     <QtModules>core;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -139,6 +139,17 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Resources\Resource.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\VS\EShortcutListener\EShortcutListener.vcxproj">
+      <Project>{f0193cf1-3db5-4e63-bb9a-296c59213c20}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VS\EUtilities\EUtilities.vcxproj">
+      <Project>{ab1fdb31-f30a-44f2-b563-f960687e73c8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\EQUtilities\EQUtilities.vcxproj">
+      <Project>{ecb3d703-478f-4757-883b-d08ef40126b9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

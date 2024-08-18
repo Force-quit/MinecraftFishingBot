@@ -2,10 +2,14 @@
 
 #include <QObject>
 #include <Windows.h>
+#include <thread>
 
 class EQMinecraftFishingBotWorker  : public QObject
 {
 	Q_OBJECT
+
+public:
+	bool isActive() const;
 
 public slots:
 	void toggle();
@@ -18,18 +22,18 @@ private:
 	static constexpr int SCAN_RANGE{ 15 };
 	void scan();
 	void setScanRanges();
-	
 
-	bool active;
-	bool debug;
-	bool hasBlack;
+	void debugThreadLoop(std::stop_token stopToken) const;
+	void drawDebugRectangle() const;
 
-	HWND minecraftWindowHandle;
-	RECT windowSizeRectangle;
-	HDC deviceContext;
+	std::jthread debugThread;
+	bool mIsActive{};
+	bool mIsDebug{};
 
-	int scanStartX;
-	int scanStopX;
-	int scanStartY;
-	int scanStopY;
+	HWND minecraftWindowHandle{};
+
+	int scanStartX{};
+	int scanStopX{};
+	int scanStartY{};
+	int scanStopY{};
 };
