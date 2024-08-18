@@ -10,6 +10,7 @@
 #include <QLabel>
 #include <QCheckbox>
 #include <QIcon>
+#include <QDebug>
 #include <QApplication>
 
 EQMinecraftFishingBot::EQMinecraftFishingBot()
@@ -21,7 +22,6 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 	wCentralWidget->setLayout(wCentralLayout);
 
 	auto wInstructions{ new QLabel };
-	wCentralLayout->addWidget(wInstructions);
 	wInstructions->setOpenExternalLinks(true);
 	wInstructions->setWordWrap(true);
 	wInstructions->setText(R"(
@@ -33,6 +33,7 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 		<p>For more details, visit my video showing <a href='https://youtu.be/ir8nRKQIZ28?si=0Zxs-2CfayvATsm4'>how to use this bot</a>.</p>
 		<p>Don't minimise the Minecraft window and you should be good to go!</p>
 	)");
+	wCentralLayout->addWidget(wInstructions);
 
 	wCentralLayout->addWidget(initActivation());
 
@@ -42,61 +43,62 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 QGroupBox* EQMinecraftFishingBot::initActivation()
 {
 	auto* activationGroupBox{ new QGroupBox("Activation") };
+
 	auto* activationLayout{ new QVBoxLayout };
+	activationGroupBox->setLayout(activationLayout);
 
 	auto* activationDebugCheckbox{ new QCheckBox("Activate debug mode") };
 	activationLayout->addWidget(activationDebugCheckbox);
 
-	auto* activationStatusLayout{ new QHBoxLayout };
-	QSizePolicy p;
-	p.setHorizontalStretch(1);
-	auto* activationStatusLabel{ new QLabel("Bot status : ") };
-	activationStatusLabel->setSizePolicy(p);
+	activationLayout->addLayout(initBotStatus());
 
-	mStatusLabel->setAutoFillBackground(true);
-	activationStatusLayout->addWidget(activationStatusLabel);
-	activationStatusLayout->addWidget(mStatusLabel);
-
-	connect(shortcutListener, &EQShortcutPicker::shortcutPressed, worker, &EQMinecraftFishingBotWorker::toggle);
-	connect(shortcutListener, &EQShortcutPicker::shortcutPressed, this, &EQMinecraftFishingBot::toggle);
-
-	connect(activationDebugCheckbox, &QCheckBox::stateChanged, worker, &EQMinecraftFishingBotWorker::toggleDebug);
+	mShortcutListener->startListening();
+	activationLayout->addWidget(mShortcutListener);
 
 	connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
+	connect(mShortcutListener, &EQShortcutPicker::shortcutPressed, worker, &EQMinecraftFishingBotWorker::toggle);
+	connect(worker, &EQMinecraftFishingBotWorker::activated, this, &EQMinecraftFishingBot::activated);
+	connect(worker, &EQMinecraftFishingBotWorker::deactivated, this, &EQMinecraftFishingBot::deactivated);
+	connect(activationDebugCheckbox, &QCheckBox::stateChanged, worker, &EQMinecraftFishingBotWorker::toggleDebug);
+
 	worker->moveToThread(&workerThread);
 	workerThread.start();
 
-	shortcutListener->startListening();
-
-	activationLayout->addLayout(activationStatusLayout);
-	activationLayout->addWidget(shortcutListener);
-	activationGroupBox->setLayout(activationLayout);
 	return activationGroupBox;
 }
 
-void EQMinecraftFishingBot::toggle()
+QHBoxLayout* EQMinecraftFishingBot::initBotStatus()
 {
-	QPalette palette = mStatusLabel->palette();
+	auto* wActivationStatusLayout{ new QHBoxLayout };
 
-	if (worker->isActive())
-	{
-		mStatusLabel->setText("Active");
-		palette.setColor(QPalette::WindowText, Qt::black);
-		palette.setColor(mStatusLabel->backgroundRole(), Qt::green);
-	}
-	else
-	{
-		mStatusLabel->setText("Inactive");
-		palette.setColor(QPalette::WindowText, QApplication::palette().text().color());
-		palette.setColor(mStatusLabel->backgroundRole(), Qt::transparent);
-	}
+	auto* wActivationStatusLabel{ new QLabel("Bot status : ") };
+	wActivationStatusLayout->addWidget(wActivationStatusLabel);
 
-	mStatusLabel->setPalette(palette);
+	mStatusLabel->setAutoFillBackground(true);
+	wActivationStatusLayout->addWidget(mStatusLabel);
+	return wActivationStatusLayout;
 }
 
 EQMinecraftFishingBot::~EQMinecraftFishingBot()
 {
-	shortcutListener->stopListening();
 	workerThread.quit();
 	workerThread.wait();
+}
+
+void EQMinecraftFishingBot::activated()
+{
+	QPalette palette(mStatusLabel->palette());
+	mStatusLabel->setText("Active");
+	palette.setColor(QPalette::WindowText, Qt::black);
+	palette.setColor(mStatusLabel->backgroundRole(), Qt::green);
+	mStatusLabel->setPalette(palette);
+}
+
+void EQMinecraftFishingBot::deactivated()
+{
+	QPalette palette(mStatusLabel->palette());
+	mStatusLabel->setText("Inactive");
+	palette.setColor(QPalette::WindowText, QApplication::palette().text().color());
+	palette.setColor(mStatusLabel->backgroundRole(), Qt::transparent);
+	mStatusLabel->setPalette(palette);
 }

@@ -6,6 +6,7 @@
 #include "EQMinecraftFishingBotWorker.h"
 #include <EQUtilities/EQShortcutPicker.h>
 #include <QLabel>
+#include <QHBoxLayout>
 
 class EQMinecraftFishingBot : public QMainWindow
 {
@@ -16,13 +17,15 @@ public:
 	~EQMinecraftFishingBot();
 
 private slots:
-	void toggle();
+	void activated();
+	void deactivated();
 
 private:
 	QGroupBox* initActivation();
+	QHBoxLayout* initBotStatus();
 
 	QLabel* mStatusLabel{ new QLabel("Inactive") };
-	EQShortcutPicker* shortcutListener{ new EQShortcutPicker("Toggle bot :") };
+	EQShortcutPicker* mShortcutListener{ new EQShortcutPicker("Toggle bot :") };
 
 	EQMinecraftFishingBotWorker* worker{ new EQMinecraftFishingBotWorker };
 	QThread workerThread;

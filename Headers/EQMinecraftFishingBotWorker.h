@@ -15,12 +15,16 @@ public slots:
 	void toggle();
 	void toggleDebug();
 
+signals:
+	void activated();
+	void deactivated();
+
 private slots:
-	void rightClick();
+	void rightClick(std::uint8_t iActivationCount);
 
 private:
 	static constexpr int SCAN_RANGE{ 15 };
-	void scan();
+	void scan(std::uint8_t iActivationCount);
 	void setScanRanges();
 
 	void debugThreadLoop(std::stop_token stopToken) const;
@@ -29,6 +33,7 @@ private:
 	std::jthread debugThread;
 	bool mIsActive{};
 	bool mIsDebug{};
+	std::uint8_t mActivationCount{};
 
 	HWND minecraftWindowHandle{};
 
