@@ -3,8 +3,6 @@
 #include <QThread>
 #include <Windows.h>
 
-import eutilities;
-
 bool EQMinecraftFishingBotWorker::isActive() const
 {
 	return mIsActive;
@@ -44,7 +42,6 @@ void EQMinecraftFishingBotWorker::scan(std::uint8_t iActivationCount)
 	{
 		QTimer::singleShot(100, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
 	}
-
 }
 
 void EQMinecraftFishingBotWorker::rightClick(std::uint8_t iActivationCount)
@@ -81,7 +78,7 @@ void EQMinecraftFishingBotWorker::debugThreadLoop(std::stop_token stopToken) con
 		{
 			drawDebugRectangle();
 		}
-		eutilities::sleepFor(1);
+		QThread::msleep(1);
 	}
 }
 
