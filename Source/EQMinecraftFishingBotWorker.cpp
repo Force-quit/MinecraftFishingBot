@@ -3,47 +3,50 @@
 #include <QThread>
 #include <Windows.h>
 
-void EQMinecraftFishingBotWorker::toggleDebug()
+bool EQMinecraftFishingBotWorker::isActive() const
 {
-	debug = !debug;
+	return mIsActive;
 }
 
-void EQMinecraftFishingBotWorker::scan()
+void EQMinecraftFishingBotWorker::toggleDebug()
 {
-	if (!active)
+	mIsDebug = !mIsDebug;
+}
+
+void EQMinecraftFishingBotWorker::scan(std::uint8_t iActivationCount)
+{
+	if (!mIsActive || iActivationCount != mActivationCount)
+	{
 		return;
+	}
 
-	hasBlack = false;
-
+	HDC hdc = GetDC(minecraftWindowHandle);
+	bool hasBlack{};
 	for (int y{ scanStartY }; y < scanStopY && !hasBlack; ++y)
 	{
 		for (int x{ scanStartX }; x < scanStopX && !hasBlack; ++x)
 		{
-			hasBlack = GetPixel(deviceContext, x, y) == 0;
-
-			if (debug)
-			{
-				SetPixel(deviceContext, x, y, 0x00FFFFFF);
-			}
+			hasBlack = GetPixel(hdc, x, y) == 0;
 		}
 	}
+	ReleaseDC(minecraftWindowHandle, hdc);
+
 
 	if (!hasBlack)
 	{
-		rightClick();
-		QTimer::singleShot(1000, this, &EQMinecraftFishingBotWorker::rightClick);
-
-		QTimer::singleShot(3000, this, &EQMinecraftFishingBotWorker::scan);
+		rightClick(iActivationCount);
+		QTimer::singleShot(1000, this, std::bind_front(&EQMinecraftFishingBotWorker::rightClick, this, iActivationCount));
+		QTimer::singleShot(3000, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
 	}
 	else
 	{
-		QTimer::singleShot(100, this, &EQMinecraftFishingBotWorker::scan);
+		QTimer::singleShot(100, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
 	}
 }
 
-void EQMinecraftFishingBotWorker::rightClick()
+void EQMinecraftFishingBotWorker::rightClick(std::uint8_t iActivationCount)
 {
-	if (active)
+	if (mIsActive && iActivationCount == mActivationCount)
 	{
 		SendMessage(minecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
 		QThread::msleep(50);
@@ -53,31 +56,59 @@ void EQMinecraftFishingBotWorker::rightClick()
 
 void EQMinecraftFishingBotWorker::setScanRanges()
 {
-	GetWindowRect(minecraftWindowHandle, &windowSizeRectangle);
-	deviceContext = GetDC(minecraftWindowHandle);
+	RECT wWindowSize{};
+	GetWindowRect(minecraftWindowHandle, &wWindowSize);
 
-	int middleX{ (windowSizeRectangle.right - windowSizeRectangle.left) / 2 };
+	int middleX{ (wWindowSize.right - wWindowSize.left) / 2 };
 	middleX -= 10;
 	scanStartX = middleX - SCAN_RANGE;
 	scanStopX = middleX + SCAN_RANGE;
 
-	int middleY{ (windowSizeRectangle.bottom - windowSizeRectangle.top) / 2 };
+	int middleY{ (wWindowSize.bottom - wWindowSize.top) / 2 };
 	middleY -= 10;
 	scanStartY = middleY - SCAN_RANGE;
 	scanStopY = middleY + SCAN_RANGE;
 }
 
+void EQMinecraftFishingBotWorker::debugThreadLoop(std::stop_token stopToken) const
+{
+	while (!stopToken.stop_requested())
+	{
+		if (mIsDebug)
+		{
+			drawDebugRectangle();
+		}
+		QThread::msleep(1);
+	}
+}
+
+void EQMinecraftFishingBotWorker::drawDebugRectangle() const
+{
+	HDC hdc = GetDC(minecraftWindowHandle);
+	HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
+	auto hOldBrush = static_cast<HBRUSH>(SelectObject(hdc, GetStockObject(NULL_BRUSH)));
+	RECT rect = { scanStartX, scanStartY, scanStopX, scanStopY };
+	FrameRect(hdc, &rect, hBrush);
+	SelectObject(hdc, hOldBrush);
+	DeleteObject(hBrush);
+	ReleaseDC(minecraftWindowHandle, hdc);
+}
+
 void EQMinecraftFishingBotWorker::toggle()
 {
-	active = !active;
-	if (active)
+	mIsActive = !mIsActive;
+	if (mIsActive)
 	{
 		minecraftWindowHandle = GetForegroundWindow();
 		setScanRanges();
-		scan();
+		debugThread = std::jthread(std::bind_front(&EQMinecraftFishingBotWorker::debugThreadLoop, this));
+		++mActivationCount;
+		emit activated();
+		scan(mActivationCount);
 	}
 	else
 	{
-		ReleaseDC(minecraftWindowHandle, deviceContext);
+		debugThread.request_stop();
+		emit deactivated();
 	}
 }

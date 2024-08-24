@@ -4,8 +4,9 @@
 #include <QThread>
 #include <QGroupBox>
 #include "EQMinecraftFishingBotWorker.h"
-#include <EQUtilities/EQShortcutListener.h>
-#include <memory>
+#include <EQUtilities/EQShortcutPicker.h>
+#include <QLabel>
+#include <QHBoxLayout>
 
 class EQMinecraftFishingBot : public QMainWindow
 {
@@ -15,12 +16,17 @@ public:
 	EQMinecraftFishingBot();
 	~EQMinecraftFishingBot();
 
-private:
-	QThread workerThread;
-	std::unique_ptr<EQMinecraftFishingBotWorker> worker;
+private slots:
+	void activated();
+	void deactivated();
 
-	// These are deleted whith Qt's parent system
-	EQShortcutListener* shortcutListener; 
-	QGroupBox* initInstructions();
+private:
 	QGroupBox* initActivation();
+	QHBoxLayout* initBotStatus();
+
+	QLabel* mStatusLabel{ new QLabel("Inactive") };
+	EQShortcutPicker* mShortcutListener{ new EQShortcutPicker("Toggle bot :") };
+
+	EQMinecraftFishingBotWorker* worker{ new EQMinecraftFishingBotWorker };
+	QThread workerThread;
 };
