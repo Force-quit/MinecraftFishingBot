@@ -26,12 +26,13 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 	wInstructions->setWordWrap(true);
 	wInstructions->setText(R"(
 		<h2>How to Use the Fishing Bot</h2>
-		<p>1. Start fishing.</p>
-		<p>2. Put your cursor on the floater (end of the fishing line).</p>
-		<p>3. Activate/deactive the bot with the indicated shortcut.</p>
-		<p>4. Enjoy!</p>
+		<p>- Start fishing.</p>
+		<p>- Put your cursor on the bobber.</p>
+		<p>- Activate/deactive the bot with the indicated shortcut.</p>
 		<p>For more details, visit my video showing <a href='https://youtu.be/ir8nRKQIZ28?si=0Zxs-2CfayvATsm4'>how to use this bot</a>.</p>
-		<p>Don't minimise the Minecraft window and you should be good to go!</p>
+		<p>Don't minimise the Minecraft window</p>
+		<p>Fullscreen doesn't work</p>
+		<p>You can use the "debug" mode to see the box where the scan is taking place. Make sure the bobber goes out of that box when there's a fish.
 	)");
 	wCentralLayout->addWidget(wInstructions);
 
