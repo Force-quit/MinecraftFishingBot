@@ -13,63 +13,6 @@ void EQMinecraftFishingBotWorker::toggleDebug()
 	mIsDebug = !mIsDebug;
 }
 
-void EQMinecraftFishingBotWorker::scan(std::uint8_t iActivationCount)
-{
-	if (!mIsActive || iActivationCount != mActivationCount)
-	{
-		return;
-	}
-
-	HDC hdc = GetDC(minecraftWindowHandle);
-	bool hasBlack{};
-	for (int y{ scanStartY }; y < scanStopY && !hasBlack; ++y)
-	{
-		for (int x{ scanStartX }; x < scanStopX && !hasBlack; ++x)
-		{
-			hasBlack = GetPixel(hdc, x, y) == 0;
-		}
-	}
-	ReleaseDC(minecraftWindowHandle, hdc);
-
-
-	if (!hasBlack)
-	{
-		rightClick(iActivationCount);
-		QTimer::singleShot(1000, this, std::bind_front(&EQMinecraftFishingBotWorker::rightClick, this, iActivationCount));
-		QTimer::singleShot(3000, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
-	}
-	else
-	{
-		QTimer::singleShot(100, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
-	}
-}
-
-void EQMinecraftFishingBotWorker::rightClick(std::uint8_t iActivationCount)
-{
-	if (mIsActive && iActivationCount == mActivationCount)
-	{
-		SendMessage(minecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
-		QThread::msleep(50);
-		SendMessage(minecraftWindowHandle, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(15, 15));
-	}
-}
-
-void EQMinecraftFishingBotWorker::setScanRanges()
-{
-	RECT wWindowSize{};
-	GetWindowRect(minecraftWindowHandle, &wWindowSize);
-
-	int middleX{ (wWindowSize.right - wWindowSize.left) / 2 };
-	middleX -= 10;
-	scanStartX = middleX - SCAN_RANGE;
-	scanStopX = middleX + SCAN_RANGE;
-
-	int middleY{ (wWindowSize.bottom - wWindowSize.top) / 2 };
-	middleY -= 10;
-	scanStartY = middleY - SCAN_RANGE;
-	scanStopY = middleY + SCAN_RANGE;
-}
-
 void EQMinecraftFishingBotWorker::debugThreadLoop(std::stop_token stopToken) const
 {
 	while (!stopToken.stop_requested())
@@ -84,14 +27,95 @@ void EQMinecraftFishingBotWorker::debugThreadLoop(std::stop_token stopToken) con
 
 void EQMinecraftFishingBotWorker::drawDebugRectangle() const
 {
-	HDC hdc = GetDC(minecraftWindowHandle);
-	HBRUSH hBrush = CreateSolidBrush(RGB(255, 255, 255));
-	auto hOldBrush = static_cast<HBRUSH>(SelectObject(hdc, GetStockObject(NULL_BRUSH)));
-	RECT rect = { scanStartX, scanStartY, scanStopX, scanStopY };
+	HDC hdc{ GetDC(mMinecraftWindowHandle) };
+	HBRUSH hBrush{ CreateSolidBrush(RGB(255, 255, 255)) };
+	HBRUSH hOldBrush{ static_cast<HBRUSH>(SelectObject(hdc, GetStockObject(NULL_BRUSH))) };
+	RECT rect{ mScanStartX, mScanStartY, mScanStopX, mScanStopY };
 	FrameRect(hdc, &rect, hBrush);
 	SelectObject(hdc, hOldBrush);
 	DeleteObject(hBrush);
-	ReleaseDC(minecraftWindowHandle, hdc);
+	ReleaseDC(mMinecraftWindowHandle, hdc);
+}
+
+void EQMinecraftFishingBotWorker::scan(std::uint8_t iActivationCount)
+{
+	if (!mIsActive || iActivationCount != mActivationCount)
+	{
+		return;
+	}
+
+	if (!findBlackPixelInWindow())
+	{
+		rightClick(iActivationCount);
+		QTimer::singleShot(1000, this, std::bind_front(&EQMinecraftFishingBotWorker::rightClick, this, iActivationCount));
+		QTimer::singleShot(3500, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
+	}
+	else
+	{
+		QTimer::singleShot(100, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
+	}
+}
+
+void EQMinecraftFishingBotWorker::rightClick(std::uint8_t iActivationCount)
+{
+	if (mIsActive && iActivationCount == mActivationCount)
+	{
+		SendMessage(mMinecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
+		QThread::msleep(50);
+		SendMessage(mMinecraftWindowHandle, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(15, 15));
+	}
+}
+
+void EQMinecraftFishingBotWorker::setScanRanges()
+{
+	RECT wWindowSize{};
+	GetWindowRect(mMinecraftWindowHandle, &wWindowSize);
+
+	int wMiddleX{ (wWindowSize.right - wWindowSize.left) / 2 };
+	wMiddleX -= 10;
+	mScanStartX = wMiddleX - SCAN_RANGE;
+	mScanStopX = wMiddleX + SCAN_RANGE;
+
+	int wMiddleY{ (wWindowSize.bottom - wWindowSize.top) / 2 };
+	wMiddleY -= 10;
+	mScanStartY = wMiddleY - SCAN_RANGE;
+	mScanStopY = wMiddleY + SCAN_RANGE;
+}
+
+bool EQMinecraftFishingBotWorker::findBlackPixelInWindow() const
+{
+	HDC wHDC{ GetDC(mMinecraftWindowHandle) };
+	HBITMAP wHBitmap{ CreateCompatibleBitmap(wHDC, FULL_SCAN_RANGE, FULL_SCAN_RANGE) };
+	HDC wHMemDC{ CreateCompatibleDC(wHDC) };
+	HBITMAP wOldBitmap{ static_cast<HBITMAP>(SelectObject(wHMemDC, wHBitmap)) };
+
+	BitBlt(wHMemDC, 0, 0, FULL_SCAN_RANGE, FULL_SCAN_RANGE, wHDC, mScanStartX, mScanStartY, SRCCOPY);
+
+	std::array<BYTE, FULL_SCAN_RANGE * FULL_SCAN_RANGE * 4> wPixelData{};
+	BITMAPINFO wBitmapInfo{};
+	wBitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	wBitmapInfo.bmiHeader.biWidth = FULL_SCAN_RANGE;
+	wBitmapInfo.bmiHeader.biHeight = -FULL_SCAN_RANGE;
+	wBitmapInfo.bmiHeader.biPlanes = 1;
+	wBitmapInfo.bmiHeader.biBitCount = 32;
+	wBitmapInfo.bmiHeader.biCompression = BI_RGB;
+	GetDIBits(wHMemDC, wHBitmap, 0, FULL_SCAN_RANGE, wPixelData.data(), &wBitmapInfo, DIB_RGB_COLORS);
+
+	bool wFoundBlackPixel{};
+	for (int i{}; i < FULL_SCAN_RANGE && !wFoundBlackPixel; ++i)
+	{
+		for (int j{}; j < FULL_SCAN_RANGE && !wFoundBlackPixel; ++j)
+		{
+			const BYTE* pixel = wPixelData.data() + (i * FULL_SCAN_RANGE + j) * 4;
+			wFoundBlackPixel = pixel[2] == 0 && pixel[1] == 0 && pixel[0] == 0;
+		}
+	}
+
+	SelectObject(wHMemDC, wOldBitmap);
+	DeleteObject(wHBitmap);
+	DeleteDC(wHMemDC);
+	ReleaseDC(mMinecraftWindowHandle, wHDC);
+	return wFoundBlackPixel;
 }
 
 void EQMinecraftFishingBotWorker::toggle()
@@ -99,16 +123,16 @@ void EQMinecraftFishingBotWorker::toggle()
 	mIsActive = !mIsActive;
 	if (mIsActive)
 	{
-		minecraftWindowHandle = GetForegroundWindow();
+		mMinecraftWindowHandle = GetForegroundWindow();
 		setScanRanges();
-		debugThread = std::jthread(std::bind_front(&EQMinecraftFishingBotWorker::debugThreadLoop, this));
+		mDebugThread = std::jthread(std::bind_front(&EQMinecraftFishingBotWorker::debugThreadLoop, this));
 		++mActivationCount;
 		emit activated();
 		scan(mActivationCount);
 	}
 	else
 	{
-		debugThread.request_stop();
+		mDebugThread.request_stop();
 		emit deactivated();
 	}
 }

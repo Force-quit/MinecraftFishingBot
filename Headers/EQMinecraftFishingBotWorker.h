@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include <thread>
 
-class EQMinecraftFishingBotWorker  : public QObject
+class EQMinecraftFishingBotWorker : public QObject
 {
 	Q_OBJECT
 
@@ -24,21 +24,24 @@ private slots:
 
 private:
 	static constexpr int SCAN_RANGE{ 15 };
-	void scan(std::uint8_t iActivationCount);
+	static constexpr int FULL_SCAN_RANGE{ 2 * SCAN_RANGE };
+
 	void setScanRanges();
+	void scan(std::uint8_t iActivationCount);
+	bool findBlackPixelInWindow() const;
 
 	void debugThreadLoop(std::stop_token stopToken) const;
 	void drawDebugRectangle() const;
 
-	std::jthread debugThread;
+	HWND mMinecraftWindowHandle{};
+
+	std::jthread mDebugThread;
 	bool mIsActive{};
 	bool mIsDebug{};
 	std::uint8_t mActivationCount{};
 
-	HWND minecraftWindowHandle{};
-
-	int scanStartX{};
-	int scanStopX{};
-	int scanStartY{};
-	int scanStopY{};
+	int mScanStartX{};
+	int mScanStopX{};
+	int mScanStartY{};
+	int mScanStopY{};
 };
