@@ -78,6 +78,7 @@ QGroupBox* EQMinecraftFishingBot::initParameters()
 
 	layout->addLayout(initScanSize());
 	layout->addLayout(initRightClickInterval());
+	layout->addLayout(initScanCooldown());
 
 	return groupBox;
 }
@@ -116,7 +117,7 @@ QHBoxLayout* EQMinecraftFishingBot::initRightClickInterval()
 
 	auto* slider{ new QSlider(Qt::Horizontal) };
 	slider->setMinimum(EQMinecraftFishingBotWorker::MINIMUM_RIGHT_CLICK_INTERVAL);
-	slider->setMaximum(EQMinecraftFishingBotWorker::MAXIMUM_RIGHT_CLICK_INTERVAL);
+	slider->setMaximum(EQMinecraftFishingBotWorker::DEFAULT_RIGHT_CLICK_INTERVAL);
 	slider->setValue(EQMinecraftFishingBotWorker::DEFAULT_RIGHT_CLICK_INTERVAL);
 	layout->addWidget(slider);
 
@@ -125,6 +126,32 @@ QHBoxLayout* EQMinecraftFishingBot::initRightClickInterval()
 	layout->addWidget(valueLabel);
 
 	connect(slider, &QSlider::valueChanged, worker, &EQMinecraftFishingBotWorker::setRightClickInterval);
+	connect(slider, &QSlider::valueChanged, [valueLabel](int iValue)
+	{
+		valueLabel->setText(labelFormat.arg(iValue));
+	});
+
+	return layout;
+}
+
+QHBoxLayout* EQMinecraftFishingBot::initScanCooldown()
+{
+	auto* layout{ new QHBoxLayout };
+
+	auto* label{ new QLabel("Scan cooldown : ") };
+	layout->addWidget(label);
+
+	auto* slider{ new QSlider(Qt::Horizontal) };
+	slider->setMinimum(EQMinecraftFishingBotWorker::MINIMUM_SCAN_COOLDOWN);
+	slider->setMaximum(EQMinecraftFishingBotWorker::MAXIMUM_SCAN_COOLDOWN);
+	slider->setValue(EQMinecraftFishingBotWorker::DEFAULT_SCAN_COOLDOWN);
+	layout->addWidget(slider);
+
+	static const QString labelFormat{ QStringLiteral(u"%1ms") };
+	auto* valueLabel{ new QLabel(labelFormat.arg(EQMinecraftFishingBotWorker::DEFAULT_SCAN_COOLDOWN)) };
+	layout->addWidget(valueLabel);
+
+	connect(slider, &QSlider::valueChanged, worker, &EQMinecraftFishingBotWorker::setScanCooldown);
 	connect(slider, &QSlider::valueChanged, [valueLabel](int iValue)
 	{
 		valueLabel->setText(labelFormat.arg(iValue));

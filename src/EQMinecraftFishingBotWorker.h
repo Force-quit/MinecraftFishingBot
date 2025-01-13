@@ -16,14 +16,18 @@ public:
 	static constexpr int DEFAULT_SCAN_SIZE{ MAX_SCAN_SIZE / 2 };
 
 	static constexpr int MINIMUM_RIGHT_CLICK_INTERVAL{ 500 };
-	static constexpr int MAXIMUM_RIGHT_CLICK_INTERVAL{ 2000 };
-	static constexpr int DEFAULT_RIGHT_CLICK_INTERVAL{ MAXIMUM_RIGHT_CLICK_INTERVAL / 2 };
+	static constexpr int DEFAULT_RIGHT_CLICK_INTERVAL{ 1000 };
+
+	static constexpr int MINIMUM_SCAN_COOLDOWN{ 1000 };
+	static constexpr int MAXIMUM_SCAN_COOLDOWN{ 5000 };
+	static constexpr int DEFAULT_SCAN_COOLDOWN{ MAXIMUM_SCAN_COOLDOWN / 2 };
 
 public slots:
 	void toggle();
 	void toggleDebug();
 	void setScanSize(int iScanSize);
 	void setRightClickInterval(int iRightClickInterval);
+	void setScanCooldown(int iCatchCooldown);
 
 signals:
 	void activated();
@@ -49,6 +53,7 @@ private:
 	std::uint8_t mActivationCount{};
 
 	int mRightClickInterval{ DEFAULT_RIGHT_CLICK_INTERVAL };
+	int mScanCooldown{ DEFAULT_SCAN_COOLDOWN };
 
 	int mScanSize{ DEFAULT_SCAN_SIZE };
 	int mScanStartX{};
