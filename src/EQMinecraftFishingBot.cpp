@@ -77,6 +77,7 @@ QGroupBox* EQMinecraftFishingBot::initParameters()
 	groupBox->setLayout(layout);
 
 	layout->addLayout(initScanSize());
+	layout->addLayout(initRightClickInterval());
 
 	return groupBox;
 }
@@ -101,6 +102,32 @@ QHBoxLayout* EQMinecraftFishingBot::initScanSize()
 	connect(slider, &QSlider::valueChanged, [valueLabel](int iValue)
 	{
 		valueLabel->setText(QString::number(iValue));
+	});
+
+	return layout;
+}
+
+QHBoxLayout* EQMinecraftFishingBot::initRightClickInterval()
+{
+	auto* layout{ new QHBoxLayout };
+
+	auto* label{ new QLabel("Right click interval : ") };
+	layout->addWidget(label);
+
+	auto* slider{ new QSlider(Qt::Horizontal) };
+	slider->setMinimum(EQMinecraftFishingBotWorker::MINIMUM_RIGHT_CLICK_INTERVAL);
+	slider->setMaximum(EQMinecraftFishingBotWorker::MAXIMUM_RIGHT_CLICK_INTERVAL);
+	slider->setValue(EQMinecraftFishingBotWorker::DEFAULT_RIGHT_CLICK_INTERVAL);
+	layout->addWidget(slider);
+
+	static const QString labelFormat{ QStringLiteral(u"%1ms") };
+	auto* valueLabel{ new QLabel(labelFormat.arg(EQMinecraftFishingBotWorker::DEFAULT_RIGHT_CLICK_INTERVAL)) };
+	layout->addWidget(valueLabel);
+
+	connect(slider, &QSlider::valueChanged, worker, &EQMinecraftFishingBotWorker::setRightClickInterval);
+	connect(slider, &QSlider::valueChanged, [valueLabel](int iValue)
+	{
+		valueLabel->setText(labelFormat.arg(iValue));
 	});
 
 	return layout;

@@ -25,6 +25,7 @@ private:
 
 	QGroupBox* initParameters();
 	QHBoxLayout* initScanSize();
+	QHBoxLayout* initRightClickInterval();
 
 	QLabel* mStatusLabel{ new QLabel("Inactive") };
 	EQShortcutPicker* mShortcutListener{ new EQShortcutPicker("Toggle bot :") };

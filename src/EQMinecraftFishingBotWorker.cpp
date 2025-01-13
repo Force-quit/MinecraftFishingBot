@@ -22,6 +22,11 @@ void EQMinecraftFishingBotWorker::setScanSize(int iScanSize)
 	}
 }
 
+void EQMinecraftFishingBotWorker::setRightClickInterval(int iRightClickInterval)
+{
+	mRightClickInterval = iRightClickInterval;
+}
+
 void EQMinecraftFishingBotWorker::debugThreadLoop(std::stop_token stopToken) const
 {
 	while (!stopToken.stop_requested())
@@ -56,7 +61,7 @@ void EQMinecraftFishingBotWorker::scan(std::uint8_t iActivationCount)
 	if (!findBlackPixelInWindow())
 	{
 		rightClick(iActivationCount);
-		QTimer::singleShot(1000, this, std::bind_front(&EQMinecraftFishingBotWorker::rightClick, this, iActivationCount));
+		QTimer::singleShot(mRightClickInterval, this, std::bind_front(&EQMinecraftFishingBotWorker::rightClick, this, iActivationCount));
 		QTimer::singleShot(2500, this, std::bind_front(&EQMinecraftFishingBotWorker::waitForFishingLine, this, iActivationCount));
 	}
 	else
