@@ -1,12 +1,12 @@
-#include "../Headers/EQMinecraftFishingBot.h"
-#include "../Headers/EQMinecraftFishingBotWorker.h"
+#include "EQMinecraftFishingBot.h"
+#include "EQMinecraftFishingBotWorker.h"
 #include <QBoxLayout>
 #include <QGroupBox>
 #include <QCoreApplication>
 #include <QStringList>
 #include <QStringView>
 #include <QDesktopServices>
-#include <EQUtilities/EQShortcutPicker.h>
+#include <EQShortcutPicker.hpp>
 #include <QLabel>
 #include <QCheckbox>
 #include <QIcon>
@@ -38,7 +38,7 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 
 	wCentralLayout->addWidget(initActivation());
 
-	setWindowIcon(QIcon(":/images/fish.png"));
+	setWindowIcon(QIcon(":/images/icon.png"));
 }
 
 QGroupBox* EQMinecraftFishingBot::initActivation()

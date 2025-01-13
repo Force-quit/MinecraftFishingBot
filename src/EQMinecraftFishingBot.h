@@ -4,7 +4,7 @@
 #include <QThread>
 #include <QGroupBox>
 #include "EQMinecraftFishingBotWorker.h"
-#include <EQUtilities/EQShortcutPicker.h>
+#include <EQShortcutPicker.hpp>
 #include <QLabel>
 #include <QHBoxLayout>
 
