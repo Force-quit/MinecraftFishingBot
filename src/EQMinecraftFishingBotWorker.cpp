@@ -48,11 +48,26 @@ void EQMinecraftFishingBotWorker::scan(std::uint8_t iActivationCount)
 	{
 		rightClick(iActivationCount);
 		QTimer::singleShot(1000, this, std::bind_front(&EQMinecraftFishingBotWorker::rightClick, this, iActivationCount));
-		QTimer::singleShot(3500, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
+		QTimer::singleShot(2500, this, std::bind_front(&EQMinecraftFishingBotWorker::waitForFishingLine, this, iActivationCount));
 	}
 	else
 	{
 		QTimer::singleShot(100, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
+	}
+}
+
+void EQMinecraftFishingBotWorker::waitForFishingLine(std::uint8_t iActivationCount)
+{
+	if (mIsActive && iActivationCount == mActivationCount)
+	{
+		if (findBlackPixelInWindow())
+		{
+			QTimer::singleShot(100, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
+		}
+		else
+		{
+			QTimer::singleShot(100, this, std::bind_front(&EQMinecraftFishingBotWorker::waitForFishingLine, this, iActivationCount));
+		}
 	}
 }
 

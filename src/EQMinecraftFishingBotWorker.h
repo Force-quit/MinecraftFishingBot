@@ -28,6 +28,7 @@ private:
 
 	void setScanRanges();
 	void scan(std::uint8_t iActivationCount);
+	void waitForFishingLine(std::uint8_t iActivationCount);
 	bool findBlackPixelInWindow() const;
 
 	void debugThreadLoop(std::stop_token stopToken) const;
