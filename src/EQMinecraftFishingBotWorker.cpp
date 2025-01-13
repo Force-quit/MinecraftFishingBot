@@ -1,4 +1,4 @@
-#include "../Headers/EQMinecraftFishingBotWorker.h"
+#include "EQMinecraftFishingBotWorker.h"
 #include <QTimer>
 #include <QThread>
 #include <Windows.h>
