@@ -11,6 +11,7 @@
 #include <QCheckbox>
 #include <QIcon>
 #include <QDebug>
+#include <QSlider>
 #include <QApplication>
 
 EQMinecraftFishingBot::EQMinecraftFishingBot()
@@ -37,6 +38,7 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 	wCentralLayout->addWidget(wInstructions);
 
 	wCentralLayout->addWidget(initActivation());
+	wCentralLayout->addWidget(initParameters());
 
 	setWindowIcon(QIcon(":/images/icon.png"));
 }
@@ -66,6 +68,43 @@ QGroupBox* EQMinecraftFishingBot::initActivation()
 	workerThread.start();
 
 	return activationGroupBox;
+}
+
+QGroupBox* EQMinecraftFishingBot::initParameters()
+{
+	auto* groupBox{ new QGroupBox("Parameters") };
+
+	auto* layout{ new QVBoxLayout };
+	groupBox->setLayout(layout);
+
+	layout->addLayout(initScanSize());
+
+	return groupBox;
+}
+
+QHBoxLayout* EQMinecraftFishingBot::initScanSize()
+{
+	auto* layout{ new QHBoxLayout };
+
+	auto* label{ new QLabel("Scan size : ") };
+	layout->addWidget(label);
+
+	auto* slider{ new QSlider(Qt::Horizontal) };
+	slider->setMinimum(EQMinecraftFishingBotWorker::MINIMUM_SCAN_SIZE);
+	slider->setMaximum(EQMinecraftFishingBotWorker::MAX_SCAN_SIZE);
+	slider->setValue(EQMinecraftFishingBotWorker::DEFAULT_SCAN_SIZE);
+	layout->addWidget(slider);
+
+	auto* valueLabel{ new QLabel(QString::number(EQMinecraftFishingBotWorker::DEFAULT_SCAN_SIZE)) };
+	layout->addWidget(valueLabel);
+
+	connect(slider, &QSlider::valueChanged, worker, &EQMinecraftFishingBotWorker::setScanSize);
+	connect(slider, &QSlider::valueChanged, [valueLabel](int iValue)
+	{
+		valueLabel->setText(QString::number(iValue));
+	});
+
+	return layout;
 }
 
 QHBoxLayout* EQMinecraftFishingBot::initBotStatus()

@@ -13,6 +13,15 @@ void EQMinecraftFishingBotWorker::toggleDebug()
 	mIsDebug = !mIsDebug;
 }
 
+void EQMinecraftFishingBotWorker::setScanSize(int iScanSize)
+{
+	mScanSize = iScanSize;
+	if (mMinecraftWindowHandle)
+	{
+		setScanRanges();
+	}
+}
+
 void EQMinecraftFishingBotWorker::debugThreadLoop(std::stop_token stopToken) const
 {
 	while (!stopToken.stop_requested())
@@ -88,40 +97,40 @@ void EQMinecraftFishingBotWorker::setScanRanges()
 
 	int wMiddleX{ (wWindowSize.right - wWindowSize.left) / 2 };
 	wMiddleX -= 10;
-	mScanStartX = wMiddleX - SCAN_RANGE;
-	mScanStopX = wMiddleX + SCAN_RANGE;
+	mScanStartX = wMiddleX - mScanSize / 2;
+	mScanStopX = wMiddleX + mScanSize / 2;
 
 	int wMiddleY{ (wWindowSize.bottom - wWindowSize.top) / 2 };
 	wMiddleY -= 10;
-	mScanStartY = wMiddleY - SCAN_RANGE;
-	mScanStopY = wMiddleY + SCAN_RANGE;
+	mScanStartY = wMiddleY - mScanSize / 2;
+	mScanStopY = wMiddleY + mScanSize / 2;
 }
 
 bool EQMinecraftFishingBotWorker::findBlackPixelInWindow() const
 {
 	HDC wHDC{ GetDC(mMinecraftWindowHandle) };
-	HBITMAP wHBitmap{ CreateCompatibleBitmap(wHDC, FULL_SCAN_RANGE, FULL_SCAN_RANGE) };
+	HBITMAP wHBitmap{ CreateCompatibleBitmap(wHDC, mScanSize, mScanSize) };
 	HDC wHMemDC{ CreateCompatibleDC(wHDC) };
 	HBITMAP wOldBitmap{ static_cast<HBITMAP>(SelectObject(wHMemDC, wHBitmap)) };
 
-	BitBlt(wHMemDC, 0, 0, FULL_SCAN_RANGE, FULL_SCAN_RANGE, wHDC, mScanStartX, mScanStartY, SRCCOPY);
+	BitBlt(wHMemDC, 0, 0, mScanSize, mScanSize, wHDC, mScanStartX, mScanStartY, SRCCOPY);
 
-	std::array<BYTE, FULL_SCAN_RANGE * FULL_SCAN_RANGE * 4> wPixelData{};
+	std::vector<BYTE> wPixelData(mScanSize * mScanSize * 4);
 	BITMAPINFO wBitmapInfo{};
 	wBitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	wBitmapInfo.bmiHeader.biWidth = FULL_SCAN_RANGE;
-	wBitmapInfo.bmiHeader.biHeight = -FULL_SCAN_RANGE;
+	wBitmapInfo.bmiHeader.biWidth = mScanSize;
+	wBitmapInfo.bmiHeader.biHeight = -mScanSize;
 	wBitmapInfo.bmiHeader.biPlanes = 1;
 	wBitmapInfo.bmiHeader.biBitCount = 32;
 	wBitmapInfo.bmiHeader.biCompression = BI_RGB;
-	GetDIBits(wHMemDC, wHBitmap, 0, FULL_SCAN_RANGE, wPixelData.data(), &wBitmapInfo, DIB_RGB_COLORS);
+	GetDIBits(wHMemDC, wHBitmap, 0, mScanSize, wPixelData.data(), &wBitmapInfo, DIB_RGB_COLORS);
 
 	bool wFoundBlackPixel{};
-	for (int i{}; i < FULL_SCAN_RANGE && !wFoundBlackPixel; ++i)
+	for (int i{}; i < mScanSize && !wFoundBlackPixel; ++i)
 	{
-		for (int j{}; j < FULL_SCAN_RANGE && !wFoundBlackPixel; ++j)
+		for (int j{}; j < mScanSize && !wFoundBlackPixel; ++j)
 		{
-			const BYTE* pixel = wPixelData.data() + (i * FULL_SCAN_RANGE + j) * 4;
+			const BYTE* pixel = wPixelData.data() + (i * mScanSize + j) * 4;
 			wFoundBlackPixel = pixel[2] == 0 && pixel[1] == 0 && pixel[0] == 0;
 		}
 	}
@@ -148,6 +157,7 @@ void EQMinecraftFishingBotWorker::toggle()
 	else
 	{
 		mDebugThread.request_stop();
+		mMinecraftWindowHandle = nullptr;
 		emit deactivated();
 	}
 }
