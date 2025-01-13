@@ -58,13 +58,12 @@ QGroupBox* EQMinecraftFishingBot::initActivation()
 	mShortcutListener->startListening();
 	activationLayout->addWidget(mShortcutListener);
 
-	connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
 	connect(mShortcutListener, &EQShortcutPicker::shortcutPressed, worker, &EQMinecraftFishingBotWorker::toggle);
 	connect(worker, &EQMinecraftFishingBotWorker::activated, this, &EQMinecraftFishingBot::activated);
 	connect(worker, &EQMinecraftFishingBotWorker::deactivated, this, &EQMinecraftFishingBot::deactivated);
 	connect(activationDebugCheckbox, &QCheckBox::stateChanged, worker, &EQMinecraftFishingBotWorker::toggleDebug);
 
-	worker->moveToThread(&workerThread);
+	workerThread.moveObjectToThread(worker);
 	workerThread.start();
 
 	return activationGroupBox;
@@ -117,12 +116,6 @@ QHBoxLayout* EQMinecraftFishingBot::initBotStatus()
 	mStatusLabel->setAutoFillBackground(true);
 	wActivationStatusLayout->addWidget(mStatusLabel);
 	return wActivationStatusLayout;
-}
-
-EQMinecraftFishingBot::~EQMinecraftFishingBot()
-{
-	workerThread.quit();
-	workerThread.wait();
 }
 
 void EQMinecraftFishingBot::activated()

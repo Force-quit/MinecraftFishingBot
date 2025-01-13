@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
-#include <QThread>
+#include <EQThread.hpp>
 #include <QGroupBox>
 #include "EQMinecraftFishingBotWorker.h"
 #include <EQShortcutPicker.hpp>
@@ -14,7 +14,6 @@ class EQMinecraftFishingBot : public QMainWindow
 
 public:
 	EQMinecraftFishingBot();
-	~EQMinecraftFishingBot();
 
 private slots:
 	void activated();
@@ -31,5 +30,5 @@ private:
 	EQShortcutPicker* mShortcutListener{ new EQShortcutPicker("Toggle bot :") };
 
 	EQMinecraftFishingBotWorker* worker{ new EQMinecraftFishingBotWorker };
-	QThread workerThread;
+	EQThread workerThread;
 };
