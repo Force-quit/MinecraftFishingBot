@@ -23,9 +23,9 @@ void EQMinecraftFishingBotWorker::setScanSize(int iScanSize)
 	}
 }
 
-void EQMinecraftFishingBotWorker::setRightClickInterval(int iRightClickInterval)
+void EQMinecraftFishingBotWorker::setRecastCooldown(int iRecastCooldown)
 {
-	mRightClickInterval = iRightClickInterval;
+	mRecastCooldown = iRecastCooldown;
 }
 
 void EQMinecraftFishingBotWorker::setScanCooldown(int iScanCooldown)
@@ -67,8 +67,8 @@ void EQMinecraftFishingBotWorker::scan(std::uint8_t iActivationCount)
 	if (!findBlackPixelInWindow())
 	{
 		rightClick(iActivationCount);
-		qDebug() << "Waiting for {mRightClickInterval}";
-		QTimer::singleShot(mRightClickInterval, [this, iActivationCount]()
+		qDebug() << "Re-casting in {mRightClickInterval}";
+		QTimer::singleShot(mRecastCooldown, [this, iActivationCount]()
 		{
 			rightClick(iActivationCount);
 			qDebug() << "Waiting for {mScanCooldown}";

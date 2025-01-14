@@ -25,7 +25,7 @@ private:
 
 	QGroupBox* initParameters();
 	QHBoxLayout* initScanSize();
-	QHBoxLayout* initRightClickInterval();
+	QHBoxLayout* initRecastCooldown();
 	QHBoxLayout* initScanCooldown();
 
 	QLabel* mStatusLabel{ new QLabel("Inactive") };

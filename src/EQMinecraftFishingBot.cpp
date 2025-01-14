@@ -79,7 +79,7 @@ QGroupBox* EQMinecraftFishingBot::initParameters()
 	groupBox->setLayout(layout);
 
 	layout->addLayout(initScanSize());
-	layout->addLayout(initRightClickInterval());
+	layout->addLayout(initRecastCooldown());
 	layout->addLayout(initScanCooldown());
 
 	return groupBox;
@@ -110,24 +110,24 @@ QHBoxLayout* EQMinecraftFishingBot::initScanSize()
 	return layout;
 }
 
-QHBoxLayout* EQMinecraftFishingBot::initRightClickInterval()
+QHBoxLayout* EQMinecraftFishingBot::initRecastCooldown()
 {
 	auto* layout{ new QHBoxLayout };
 
-	auto* label{ new QLabel("Right click interval : ") };
+	auto* label{ new QLabel("Re-cast cooldown : ") };
 	layout->addWidget(label);
 
 	auto* slider{ new QSlider(Qt::Horizontal) };
-	slider->setMinimum(EQMinecraftFishingBotWorker::MINIMUM_RIGHT_CLICK_INTERVAL);
-	slider->setMaximum(EQMinecraftFishingBotWorker::DEFAULT_RIGHT_CLICK_INTERVAL);
-	slider->setValue(EQMinecraftFishingBotWorker::DEFAULT_RIGHT_CLICK_INTERVAL);
+	slider->setMinimum(EQMinecraftFishingBotWorker::MINIMUM_RECAST_COOLDOWN);
+	slider->setMaximum(EQMinecraftFishingBotWorker::MAX_RECAST_COOLDOWN);
+	slider->setValue(EQMinecraftFishingBotWorker::DEFAULT_RECAST_COOLDOWN);
 	layout->addWidget(slider);
 
 	static const QString labelFormat{ QStringLiteral(u"%1ms") };
-	auto* valueLabel{ new QLabel(labelFormat.arg(EQMinecraftFishingBotWorker::DEFAULT_RIGHT_CLICK_INTERVAL)) };
+	auto* valueLabel{ new QLabel(labelFormat.arg(EQMinecraftFishingBotWorker::DEFAULT_RECAST_COOLDOWN)) };
 	layout->addWidget(valueLabel);
 
-	connect(slider, &QSlider::valueChanged, worker, &EQMinecraftFishingBotWorker::setRightClickInterval);
+	connect(slider, &QSlider::valueChanged, worker, &EQMinecraftFishingBotWorker::setRecastCooldown);
 	connect(slider, &QSlider::valueChanged, [valueLabel](int iValue)
 	{
 		valueLabel->setText(labelFormat.arg(iValue));
