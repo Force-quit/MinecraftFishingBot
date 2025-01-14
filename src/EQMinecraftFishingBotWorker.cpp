@@ -2,6 +2,7 @@
 #include <QTimer>
 #include <QThread>
 #include <Windows.h>
+#include <QDebug>
 
 bool EQMinecraftFishingBotWorker::isActive() const
 {
@@ -66,8 +67,13 @@ void EQMinecraftFishingBotWorker::scan(std::uint8_t iActivationCount)
 	if (!findBlackPixelInWindow())
 	{
 		rightClick(iActivationCount);
-		QTimer::singleShot(mRightClickInterval, this, std::bind_front(&EQMinecraftFishingBotWorker::rightClick, this, iActivationCount));
-		QTimer::singleShot(mScanCooldown, this, std::bind_front(&EQMinecraftFishingBotWorker::waitForFishingLine, this, iActivationCount));
+		qDebug() << "Waiting for {mRightClickInterval}";
+		QTimer::singleShot(mRightClickInterval, [this, iActivationCount]()
+		{
+			rightClick(iActivationCount);
+			qDebug() << "Waiting for {mScanCooldown}";
+			QTimer::singleShot(mScanCooldown, this, std::bind_front(&EQMinecraftFishingBotWorker::waitForFishingLine, this, iActivationCount));
+		});
 	}
 	else
 	{
@@ -81,6 +87,7 @@ void EQMinecraftFishingBotWorker::waitForFishingLine(std::uint8_t iActivationCou
 	{
 		if (findBlackPixelInWindow())
 		{
+			qDebug() << "Fishing line found. Starting scans.";
 			QTimer::singleShot(100, this, std::bind_front(&EQMinecraftFishingBotWorker::scan, this, iActivationCount));
 		}
 		else
@@ -94,6 +101,7 @@ void EQMinecraftFishingBotWorker::rightClick(std::uint8_t iActivationCount)
 {
 	if (mIsActive && iActivationCount == mActivationCount)
 	{
+		qDebug() << "Right click";
 		SendMessage(mMinecraftWindowHandle, WM_RBUTTONDOWN, MK_RBUTTON, MAKELPARAM(15, 15));
 		QThread::msleep(50);
 		SendMessage(mMinecraftWindowHandle, WM_RBUTTONUP, MK_RBUTTON, MAKELPARAM(15, 15));

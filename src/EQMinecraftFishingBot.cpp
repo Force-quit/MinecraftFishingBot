@@ -62,6 +62,8 @@ QGroupBox* EQMinecraftFishingBot::initActivation()
 	connect(worker, &EQMinecraftFishingBotWorker::activated, this, &EQMinecraftFishingBot::activated);
 	connect(worker, &EQMinecraftFishingBotWorker::deactivated, this, &EQMinecraftFishingBot::deactivated);
 	connect(activationDebugCheckbox, &QCheckBox::stateChanged, worker, &EQMinecraftFishingBotWorker::toggleDebug);
+	
+	activationDebugCheckbox->setChecked(true);
 
 	workerThread.moveObjectToThread(worker);
 	workerThread.start();
