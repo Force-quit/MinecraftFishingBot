@@ -19,7 +19,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(EUtilities)
 FetchContent_Declare(
     EQUtilities
-    URL https://github.com/Force-quit/EQUtilities/archive/refs/tags/v1.0.0.zip
+    URL https://github.com/Force-quit/EQUtilities/archive/refs/tags/v1.1.1.zip
 )
 FetchContent_MakeAvailable(EQUtilities)
 

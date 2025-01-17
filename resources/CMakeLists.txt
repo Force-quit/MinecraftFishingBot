@@ -1,5 +1,5 @@
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
-qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES fr)
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES fr de es)
 qt_add_translations(MinecraftFishingBot)
 
 target_sources(MinecraftFishingBot PRIVATE icon.rc)
