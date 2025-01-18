@@ -165,6 +165,7 @@ void EQMinecraftFishingBotWorker::toggle()
 	mIsActive = !mIsActive;
 	if (mIsActive)
 	{
+		SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED);
 		mMinecraftWindowHandle = GetForegroundWindow();
 		setScanRanges();
 		mDebugThread = std::jthread(std::bind_front(&EQMinecraftFishingBotWorker::debugThreadLoop, this));
@@ -174,6 +175,7 @@ void EQMinecraftFishingBotWorker::toggle()
 	}
 	else
 	{
+		SetThreadExecutionState(ES_CONTINUOUS);
 		mDebugThread.request_stop();
 		mMinecraftWindowHandle = nullptr;
 		emit deactivated();
