@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>MinecraftFishingBot</Name>
-    <Version>2.1</Version>
+    <Version>2.2</Version>
     <Title>MinecraftFishingBot installer</Title>
     <Publisher>Émile Laforce</Publisher>
-    <InstallerApplicationIcon>../../Resources/fish</InstallerApplicationIcon>
+    <InstallerApplicationIcon>../../Resources/icon</InstallerApplicationIcon>
     <StartMenuDir>Emalice</StartMenuDir>
     <WizardStyle>Modern</WizardStyle>
     <TargetDir>@ApplicationsDir@/Emalice/MinecraftFishingBot</TargetDir>
