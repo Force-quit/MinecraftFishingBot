@@ -38,6 +38,9 @@ private slots:
 	void rightClick(std::uint8_t iActivationCount);
 
 private:
+
+	static constexpr std::uint8_t BLACK_PIXEL_TOLERANCE{ 20 };
+
 	void setScanRanges();
 	void scan(std::uint8_t iActivationCount);
 	void waitForFishingLine(std::uint8_t iActivationCount);
