@@ -26,15 +26,7 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 	wInstructions->setOpenExternalLinks(true);
 	wInstructions->setWordWrap(true);
 	wInstructions->setText(R"(
-		<h2>How to Use the Fishing Bot</h2>
-		<p>- Start fishing.</p>
-		<p>- Put your cursor on the bobber.</p>
-		<p>- Activate the bot with the indicated shortcut.</p>
-		<p>- Be sure to put the black fishing line, that is right on top of the bobber, at the bottom of the scan zone (visible with debug mode).</p>
-		<p>- Adjust the scan zone if you need to.</p>
-		<p>For more details, visit my video showing <a href='https://youtu.be/ir8nRKQIZ28?si=0Zxs-2CfayvATsm4'>how to use this bot</a>.</p>
-		<p>Don't minimise the Minecraft window</p>
-		<p>Fullscreen doesn't work</p>
+		<p>For detailed instructions, visit <a href='https://www.youtube.com/@EmileLaforce/videos'>my YouTube channel</a> and find the latest Minecraft fishing bot version.</p>
 	)");
 	wCentralLayout->addWidget(wInstructions);
 
