@@ -144,14 +144,37 @@ bool EQMinecraftFishingBotWorker::findBlackPixelInWindow() const
 	GetDIBits(wHMemDC, wHBitmap, 0, mScanSize, wPixelData.data(), &wBitmapInfo, DIB_RGB_COLORS);
 
 	bool wFoundBlackPixel{};
+
+#ifdef QT_DEBUG
+	int closestRValue{ 255 };
+	int closestGValue{ 255 };
+	int closestBValue{ 255 };
+#endif
+
 	for (int i{}; i < mScanSize && !wFoundBlackPixel; ++i)
 	{
 		for (int j{}; j < mScanSize && !wFoundBlackPixel; ++j)
 		{
 			const BYTE* pixel = wPixelData.data() + (i * mScanSize + j) * 4;
-			wFoundBlackPixel = pixel[2] == 0 && pixel[1] == 0 && pixel[0] == 0;
+			wFoundBlackPixel = pixel[0] <= BLACK_PIXEL_TOLERANCE &&
+				pixel[1] <= BLACK_PIXEL_TOLERANCE &&
+				pixel[2] <= BLACK_PIXEL_TOLERANCE;
+
+#ifdef QT_DEBUG
+			// Fuck you authors of Windows.h. I hate your min and max macros.
+			closestRValue = (std::min)(closestRValue, static_cast<int>(pixel[0])); 
+			closestGValue = (std::min)(closestGValue, static_cast<int>(pixel[1]));
+			closestBValue = (std::min)(closestBValue, static_cast<int>(pixel[2]));
+#endif
 		}
 	}
+
+#ifdef QT_DEBUG
+	if (!wFoundBlackPixel)
+	{
+		qDebug() << "Closest black found : (" << closestRValue << closestGValue << closestBValue << ")";
+	}
+#endif
 
 	SelectObject(wHMemDC, wOldBitmap);
 	DeleteObject(wHBitmap);
