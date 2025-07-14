@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     QApplication::setStyle(QStyleFactory::create("Fusion"));
 
     QTranslator translator;
-    if (translator.load(QLocale(), "", "", "resources", ".qm"))
+    if (translator.load("resources/MinecraftFishingBot_" + QLocale::system().name() + ".qm"))
     {
         a.installTranslator(&translator);
     }
