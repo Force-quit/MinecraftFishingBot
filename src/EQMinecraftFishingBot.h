@@ -28,8 +28,8 @@ private:
 	QHBoxLayout* initRecastCooldown();
 	QHBoxLayout* initScanCooldown();
 
-	QLabel* mStatusLabel{ new QLabel("Inactive") };
-	EQShortcutPicker* mShortcutListener{ new EQShortcutPicker("Toggle bot :") };
+	QLabel* mStatusLabel{ new QLabel(tr("Inactive")) };
+	EQShortcutPicker* mShortcutListener{ new EQShortcutPicker(tr("Toggle bot :")) };
 
 	EQMinecraftFishingBotWorker* worker{ new EQMinecraftFishingBotWorker };
 	EQThread workerThread;

@@ -25,9 +25,9 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 	auto wInstructions{ new QLabel };
 	wInstructions->setOpenExternalLinks(true);
 	wInstructions->setWordWrap(true);
-	wInstructions->setText(R"(
+	wInstructions->setText(tr(R"(
 		<p>For detailed instructions, visit <a href='https://www.youtube.com/@EmileLaforce/videos'>my YouTube channel</a> and find the latest Minecraft fishing bot version.</p>
-	)");
+	)"));
 	wCentralLayout->addWidget(wInstructions);
 
 	wCentralLayout->addWidget(initActivation());
@@ -38,12 +38,12 @@ EQMinecraftFishingBot::EQMinecraftFishingBot()
 
 QGroupBox* EQMinecraftFishingBot::initActivation()
 {
-	auto* activationGroupBox{ new QGroupBox("Activation") };
+	auto* activationGroupBox{ new QGroupBox(tr("Activation")) };
 
 	auto* activationLayout{ new QVBoxLayout };
 	activationGroupBox->setLayout(activationLayout);
 
-	auto* activationDebugCheckbox{ new QCheckBox("Activate debug mode") };
+	auto* activationDebugCheckbox{ new QCheckBox(tr("Debug mode")) };
 	activationLayout->addWidget(activationDebugCheckbox);
 
 	activationLayout->addLayout(initBotStatus());
@@ -66,7 +66,7 @@ QGroupBox* EQMinecraftFishingBot::initActivation()
 
 QGroupBox* EQMinecraftFishingBot::initParameters()
 {
-	auto* groupBox{ new QGroupBox("Parameters") };
+	auto* groupBox{ new QGroupBox(tr("Parameters")) };
 
 	auto* layout{ new QVBoxLayout };
 	groupBox->setLayout(layout);
@@ -82,7 +82,7 @@ QHBoxLayout* EQMinecraftFishingBot::initScanSize()
 {
 	auto* layout{ new QHBoxLayout };
 
-	auto* label{ new QLabel("Scan size : ") };
+	auto* label{ new QLabel(tr("Scan size : ")) };
 	layout->addWidget(label);
 
 	auto* slider{ new QSlider(Qt::Horizontal) };
@@ -107,7 +107,7 @@ QHBoxLayout* EQMinecraftFishingBot::initRecastCooldown()
 {
 	auto* layout{ new QHBoxLayout };
 
-	auto* label{ new QLabel("Re-cast cooldown : ") };
+	auto* label{ new QLabel(tr("Re-cast cooldown : ")) };
 	layout->addWidget(label);
 
 	auto* slider{ new QSlider(Qt::Horizontal) };
@@ -133,7 +133,7 @@ QHBoxLayout* EQMinecraftFishingBot::initScanCooldown()
 {
 	auto* layout{ new QHBoxLayout };
 
-	auto* label{ new QLabel("Scan cooldown : ") };
+	auto* label{ new QLabel(tr("Scan cooldown : ")) };
 	layout->addWidget(label);
 
 	auto* slider{ new QSlider(Qt::Horizontal) };
@@ -159,7 +159,7 @@ QHBoxLayout* EQMinecraftFishingBot::initBotStatus()
 {
 	auto* wActivationStatusLayout{ new QHBoxLayout };
 
-	auto* wActivationStatusLabel{ new QLabel("Bot status : ") };
+	auto* wActivationStatusLabel{ new QLabel(tr("Bot status : ")) };
 	wActivationStatusLayout->addWidget(wActivationStatusLabel);
 
 	mStatusLabel->setAutoFillBackground(true);
@@ -170,7 +170,7 @@ QHBoxLayout* EQMinecraftFishingBot::initBotStatus()
 void EQMinecraftFishingBot::activated()
 {
 	QPalette palette(mStatusLabel->palette());
-	mStatusLabel->setText("Active");
+	mStatusLabel->setText(tr("Active"));
 	palette.setColor(QPalette::WindowText, Qt::black);
 	palette.setColor(mStatusLabel->backgroundRole(), Qt::green);
 	mStatusLabel->setPalette(palette);
@@ -179,7 +179,7 @@ void EQMinecraftFishingBot::activated()
 void EQMinecraftFishingBot::deactivated()
 {
 	QPalette palette(mStatusLabel->palette());
-	mStatusLabel->setText("Inactive");
+	mStatusLabel->setText(tr("Inactive"));
 	palette.setColor(QPalette::WindowText, QApplication::palette().text().color());
 	palette.setColor(mStatusLabel->backgroundRole(), Qt::transparent);
 	mStatusLabel->setPalette(palette);
