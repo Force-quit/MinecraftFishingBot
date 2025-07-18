@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>MinecraftFishingBot</DisplayName>
     <Description>Why spend your time fishing in Minecraft when you can have a bot do it in the background for you?</Description>
-    <Version>2.2</Version>
-    <ReleaseDate>2025-01-18</ReleaseDate>
+    <Version>2.3</Version>
+    <ReleaseDate>2025-07-17</ReleaseDate>
     <Default>script</Default>
     <ForcedInstallation>true</ForcedInstallation>
     <Script>script.qs</Script>

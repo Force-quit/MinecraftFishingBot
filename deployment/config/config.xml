@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>MinecraftFishingBot</Name>
-    <Version>2.2</Version>
+    <Version>2.3</Version>
     <Title>MinecraftFishingBot installer</Title>
     <Publisher>Émile Laforce</Publisher>
     <InstallerApplicationIcon>../../Resources/icon</InstallerApplicationIcon>
