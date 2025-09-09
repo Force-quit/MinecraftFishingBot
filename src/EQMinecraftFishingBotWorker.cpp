@@ -108,20 +108,30 @@ void EQMinecraftFishingBotWorker::rightClick(std::uint8_t iActivationCount)
 	}
 }
 
-void EQMinecraftFishingBotWorker::setScanRanges()
+void EQMinecraftFishingBotWorker::setScanRanges(bool isInit/*=false*/)
 {
 	RECT wWindowSize{};
 	GetWindowRect(mMinecraftWindowHandle, &wWindowSize);
 
-	int wMiddleX{ (wWindowSize.right - wWindowSize.left) / 2 };
-	wMiddleX -= 10;
-	mScanStartX = wMiddleX - mScanSize / 2;
-	mScanStopX = wMiddleX + mScanSize / 2;
+	const int width = wWindowSize.right - wWindowSize.left;
+	const int height = wWindowSize.bottom - wWindowSize.top;
 
-	int wMiddleY{ (wWindowSize.bottom - wWindowSize.top) / 2 };
-	wMiddleY -= 10;
-	mScanStartY = wMiddleY - mScanSize / 2;
-	mScanStopY = wMiddleY + mScanSize / 2;
+	if (isInit)
+	{
+		const int windowSize = std::sqrt(std::pow(width, 2) + std::pow(height, 2));
+		const int maxScanSize = windowSize * MAX_SCAN_PROPORTION;
+		mScanSize = maxScanSize * DEFAULT_SCAN_PROPORTION;
+		const int minScanSize = maxScanSize * MIN_SCAN_PROPORTION;
+		emit setScanBounds(minScanSize, mScanSize, maxScanSize);
+	}
+
+	int middleX{ width / 2 - 10};
+	mScanStartX = middleX - mScanSize / 2;
+	mScanStopX = middleX + mScanSize / 2;
+
+	int middleY{ height / 2 };
+	mScanStartY = middleY - mScanSize / 2;
+	mScanStopY = middleY + mScanSize / 2;
 }
 
 bool EQMinecraftFishingBotWorker::findBlackPixelInWindow() const
@@ -190,7 +200,7 @@ void EQMinecraftFishingBotWorker::toggle()
 	{
 		SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED);
 		mMinecraftWindowHandle = GetForegroundWindow();
-		setScanRanges();
+		setScanRanges(true);
 		mDebugThread = std::jthread(std::bind_front(&EQMinecraftFishingBotWorker::debugThreadLoop, this));
 		++mActivationCount;
 		emit activated();

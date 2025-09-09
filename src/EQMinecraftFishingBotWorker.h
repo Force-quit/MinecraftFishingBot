@@ -11,10 +11,6 @@ class EQMinecraftFishingBotWorker : public QObject
 public:
 	bool isActive() const;
 
-	static constexpr int MINIMUM_SCAN_SIZE{ 25 };
-	static constexpr int MAX_SCAN_SIZE{ 60 };
-	static constexpr int DEFAULT_SCAN_SIZE{ MAX_SCAN_SIZE / 2 };
-
 	static constexpr int MINIMUM_RECAST_COOLDOWN{ 500 };
 	static constexpr int DEFAULT_RECAST_COOLDOWN{ 1000 };
 	static constexpr int MAX_RECAST_COOLDOWN{ DEFAULT_RECAST_COOLDOWN * 3 };
@@ -32,16 +28,20 @@ public slots:
 
 signals:
 	void activated();
+	void setScanBounds(int iMinScanSize, int iScanSize, int iMaxScanSize);
 	void deactivated();
 
 private slots:
 	void rightClick(std::uint8_t iActivationCount);
 
 private:
+	static constexpr float MAX_SCAN_PROPORTION{ 1.f / 9.f };
+	static constexpr float DEFAULT_SCAN_PROPORTION{ 1.f / 3.f };
+	static constexpr float MIN_SCAN_PROPORTION{ 1.f / 6.f };
 
-	static constexpr std::uint8_t BLACK_PIXEL_TOLERANCE{ 20 };
+	static constexpr std::uint8_t BLACK_PIXEL_TOLERANCE{ 25 };
 
-	void setScanRanges();
+	void setScanRanges(bool isInit = false);
 	void scan(std::uint8_t iActivationCount);
 	void waitForFishingLine(std::uint8_t iActivationCount);
 	bool findBlackPixelInWindow() const;
@@ -59,7 +59,7 @@ private:
 	int mRecastCooldown{ DEFAULT_RECAST_COOLDOWN };
 	int mScanCooldown{ DEFAULT_SCAN_COOLDOWN };
 
-	int mScanSize{ DEFAULT_SCAN_SIZE };
+	int mScanSize{};
 	int mScanStartX{};
 	int mScanStopX{};
 	int mScanStartY{};

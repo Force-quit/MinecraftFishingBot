@@ -86,18 +86,24 @@ QHBoxLayout* EQMinecraftFishingBot::initScanSize()
 	layout->addWidget(label);
 
 	auto* slider{ new QSlider(Qt::Horizontal) };
-	slider->setMinimum(EQMinecraftFishingBotWorker::MINIMUM_SCAN_SIZE);
-	slider->setMaximum(EQMinecraftFishingBotWorker::MAX_SCAN_SIZE);
-	slider->setValue(EQMinecraftFishingBotWorker::DEFAULT_SCAN_SIZE);
 	layout->addWidget(slider);
 
-	auto* valueLabel{ new QLabel(QString::number(EQMinecraftFishingBotWorker::DEFAULT_SCAN_SIZE)) };
+	auto* valueLabel{ new QLabel() };
 	layout->addWidget(valueLabel);
 
 	connect(slider, &QSlider::valueChanged, worker, &EQMinecraftFishingBotWorker::setScanSize);
 	connect(slider, &QSlider::valueChanged, [valueLabel](int iValue)
 	{
 		valueLabel->setText(QString::number(iValue));
+	});
+
+	connect(worker, &EQMinecraftFishingBotWorker::setScanBounds, [slider, valueLabel](int iMinScanSize, int iScanSize, int iMaxScanSize)
+	{
+		slider->setMinimum(iMinScanSize);
+		slider->setValue(iScanSize);
+		slider->setMaximum(iMaxScanSize);
+
+		valueLabel->setText(QString::number(iScanSize));
 	});
 
 	return layout;
